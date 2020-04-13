@@ -16,7 +16,7 @@ if not os.path.exists(youtube_video_id_path):
     print("Youtube video not found")
     exit()
 
-f = open("demofile.txt", "r")
+f = open(youtube_video_id_path, "r")
 youtube_video_id = f.read()
 f.close()
 
