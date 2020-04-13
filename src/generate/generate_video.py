@@ -4,13 +4,15 @@ import datetime
 import json
 from utils.modify_image import apply_dark_effect, resize_image, crop_image_in_center
 from utils.overlay_image import overlay_image, overlay_highlight_frame, overlay_text
+from mhmovie.code import movie, music
 from utils.read_image import read_webp
 import copy
 from PIL import Image, ImageFont, ImageDraw
 import math
 import sys
-import ffmpeg
 import pathlib
+import subprocess
+from utils.config import PROJECT_PATH
 
 
 conf = {
@@ -218,12 +220,21 @@ output_dir = f"output/{datetime.date.today().strftime('%Y-%m-%d')}"
 if not os.path.exists(output_dir):
 	os.mkdir(output_dir)
 
+avi_video_name = f'highlite_{sys.argv[1]}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
+mp4_video_name = f"{avi_video_name.split('.')[0]}.mp4"
+tmp_mp4_video_name = f"tmp_{avi_video_name.split('.')[0]}.mp4"
+avi_video_rel_path = f'{output_dir}/{avi_video_name}'
+mp4_video_rel_path = f'{output_dir}/{mp4_video_name}'
+tmp_mp4_video_rel_path = f'{output_dir}/{tmp_mp4_video_name}'
+avi_video_abs_path = os.path.join(PROJECT_PATH, avi_video_rel_path)
+mp4_video_abs_path = os.path.join(PROJECT_PATH, mp4_video_rel_path)
+tmp_mp4_video_abs_path = os.path.join(PROJECT_PATH, tmp_mp4_video_rel_path)
+
 video_width = conf["format"][0]
 video_height = conf["format"][1]
 
-video_name = f'{output_dir}/highlite_{sys.argv[1]}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
 fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-video = cv2.VideoWriter(video_name, fourcc, 24, (video_width, video_height))
+video = cv2.VideoWriter(avi_video_rel_path, fourcc, 24, (video_width, video_height))
 
 color_yellow = (243, 242, 121)
 color_dark_yellow = (255, 204, 64)
@@ -277,7 +288,6 @@ w, h = draw.textsize(category, font=font)
 txt = f"Les {len(articles)} articles du jour sur"
 
 for n in range(4 * 24):
-	#image_intro = overlay_text(default_frame, txt, (int(video_width / 2) - int(w / 2) + 20, 380), 70, color_bgr_dark_yellow, f=n)
 	image_intro = overlay_text(default_frame, txt, conf["title2"]["pos"], conf["title2"]["size"], color_bgr_dark_yellow, f=n)
 	image_intro = overlay_text(image_intro, category, conf["title1"]["pos"], conf["title1"]["size"], color_bgr_dark_yellow, f=n)
 	image_intro = overlay_text(image_intro, today, conf["intro_date"]["pos"], conf["intro_date"]["size"], color_bgr_blue, pos_type="right", f=n)
@@ -373,30 +383,19 @@ video.release()
 # ADD MUSIC
 ####################
 
-"""my_clip = mpe.VideoFileClip('./video.avi')
-audio_background = mpe.AudioFileClip('./sound/Coupe.mp4')
-final_audio = mpe.CompositeAudioClip([my_clip.audio, audio_background])
-final_clip = my_clip.set_audio(final_audio)"""
+mov = movie(avi_video_abs_path)
+mus = music('./static/sound/Digital_Memories.mp3')
+final = mov + mus
+final.save(tmp_mp4_video_abs_path)
+
+if os.path.exists(mp4_video_abs_path):
+	os.remove(mp4_video_abs_path)
+
+subprocess.call(['ffmpeg', '-i', tmp_mp4_video_abs_path, '-y', '-nostdin', '-ss', '0', '-t', str(10 + len(articles) * 5), mp4_video_abs_path])
 
 ####################
-# CONVERT TO MP4
+# CLEAN
 ####################
 
-current_path = pathlib.Path(__file__).parent.absolute()
-
-'''process = (
-	ffmpeg
-	.input(os.path.join(current_path, video_name).replace("/", "\\"))
-	#.output(os.path.join(current_path, video_name[:-4] + ".mp4").replace("\\", "/"), format="mp4")
-	.output("pipe:", format="mp4")
-	.run_async(pipe_stdout=True)
-)
-out, err = process.communicate()
-print(out, err)'''
-
-'''print(os.path.join(current_path, video_name).replace("\\", "/"))
-print(os.path.join(current_path, video_name[:-4] + ".mp4").replace("\\", "/"))
-
-input = ffmpeg.input(video_name.split("/")[-1])
-output = ffmpeg.output(input, os.path.join(current_path, video_name[:-4] + ".mp4").replace("\\", "/"), format="mp4")
-output.run()'''
+os.remove(avi_video_abs_path)
+os.remove(tmp_mp4_video_abs_path)
