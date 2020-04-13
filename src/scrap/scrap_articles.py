@@ -8,6 +8,7 @@ from urllib import request
 from PIL import Image
 import datetime
 import random
+import imghdr
 
 
 articles = []
@@ -66,47 +67,47 @@ dir = f"data/{datetime.date.today().strftime('%Y-%m-%d')}"
 if not os.path.exists(dir):
 	os.mkdir(dir)
 
-	# Get the articles
+# Get the articles
 
-	if not os.path.exists(os.path.join(dir, "articles.json")):
+if not os.path.exists(os.path.join(dir, "articles.json")):
 
-		for source, url in pages:
-			driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
-			driver.get(url)
-			html = driver.page_source
-			soup = BeautifulSoup(html)
-			[x.extract() for x in soup.find_all('noscript')]
-			traverse(source, url, soup, 0)
+	for source, url in pages:
+		driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
+		driver.get(url)
+		html = driver.page_source
+		soup = BeautifulSoup(html)
+		[x.extract() for x in soup.find_all('noscript')]
+		traverse(source, url, soup, 0)
 
-		with open(os.path.join(dir, "articles.json"), 'w') as outfile:
-			json.dump(articles, outfile, indent=4)
-
-	else:
-		articles = json.load(open(os.path.exists(os.path.join(dir, "articles.json")), "r"))
-
-	# Filter the articles
-
-	articles = [a for a in articles if a["image_url"] is not None]
-	articles = [a for a in articles if "covid" in a["title"].lower() or "coronavirus" in a["title"].lower()]
-	random.shuffle(articles)
-	articles = articles[:10] if len(articles) > 9 else articles
-
-	# Get the images
-
-	for article in articles:
-		saved_image = os.path.join(dir, article['image_url'].split('?')[0].split('/')[-1])
-		print(dir)
-		print(article['image_url'].split('?'))
-		print(article['image_url'].split('?')[0].split('/')[-1])
-		request.urlretrieve(article["image_url"], saved_image)
-
-		if saved_image.lower().endswith(".jpg"):
-			im = Image.open(saved_image)
-			im.save(saved_image[:-4] + ".png", "JPEG")
-
-		article["image"] = saved_image[:-4] + ".png"
-
-	# Save the data
-
-	with open(os.path.join(dir, "articles_filt.json"), 'w') as outfile:
+	with open(os.path.join(dir, "articles.json"), 'w') as outfile:
 		json.dump(articles, outfile, indent=4)
+
+else:
+	articles = json.load(open(os.path.join(dir, "articles.json"), "r"))
+
+# Filter the articles
+
+articles = [a for a in articles if a["image_url"] is not None]
+articles = [a for a in articles if "covid" in a["title"].lower() or "coronavirus" in a["title"].lower()]
+articles = [a for i, a in enumerate(articles) if i == [y for y, b in enumerate(articles) if a["title"] == b["title"]][0]]
+
+random.shuffle(articles)
+articles = articles[:10] if len(articles) > 9 else articles
+
+# Get the images
+
+for article in articles:
+	saved_image = os.path.join(dir, article['image_url'].split('?')[0].split('/')[-1])
+	request.urlretrieve(article["image_url"], saved_image)
+	image_type = imghdr.what(saved_image)
+
+	if image_type in ("jpg", "jpeg"):
+		im = Image.open(saved_image)
+		im.save(saved_image.split(".")[0] + ".png", "JPEG")
+
+	article["image"] = saved_image[:-4] + ".png"
+
+# Save the data
+
+with open(os.path.join(dir, "articles_filt.json"), 'w') as outfile:
+	json.dump(articles, outfile, indent=4)
