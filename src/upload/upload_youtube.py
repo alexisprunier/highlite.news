@@ -105,14 +105,14 @@ def resumable_upload(request):
 
 if __name__ == '__main__':
 
-    articles = json.loads(open(article_path, "r"))
+    articles = json.load(open(article_path, "r"))
 
     articles_body = ""
     for i, a in enumerate(articles):
-        articles_body += "Article " + i + ":\n" + a["link"] + "\n"
+        articles_body += "Article " + str(i+1) + ": " + str(a["link"]) + "\n"
 
     args = {
-        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_youtube_{today}.avi"),
+        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_youtube_{today}.mp4"),
         "title": f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19",
         "description":
             f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19\n"
@@ -121,7 +121,7 @@ if __name__ == '__main__':
             "\n"
             f'{articles_body}'
             "\n"
-            "Suivez-nous sur les différents réseaux:"
+            "Suivez-nous sur les différents réseaux:\,"
             "\n"
             "Twitter: @highlitenews\n"
             "Instagram: @highlite.news\n"

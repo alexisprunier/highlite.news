@@ -10,7 +10,7 @@ today = datetime.date.today().strftime('%Y-%m-%d')
 today_fr = datetime.date.today().strftime('%d-%m-%Y')
 text = 'Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19'
 
-video_path = os.path.join(PROJECT_PATH, "output", today, f"highlite_instagram_{today}.avi")
+video_path = os.path.join(PROJECT_PATH, "output", today, f"highlite_instagram_{today}.mp4")
 
 with client(username, password) as cli:
     cli.upload(video_path, text)
