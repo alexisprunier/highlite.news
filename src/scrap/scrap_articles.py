@@ -68,7 +68,7 @@ if not os.path.exists(dir):
 
 	# Get the articles
 
-	if not os.path.exists(os.path.join(dir, "0_articles.json")):
+	if not os.path.exists(os.path.join(dir, "articles.json")):
 
 		for source, url in pages:
 			driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
@@ -78,11 +78,11 @@ if not os.path.exists(dir):
 			[x.extract() for x in soup.find_all('noscript')]
 			traverse(source, url, soup, 0)
 
-		with open(os.path.join(dir, "0_articles.json"), 'w') as outfile:
+		with open(os.path.join(dir, "articles.json"), 'w') as outfile:
 			json.dump(articles, outfile, indent=4)
 
 	else:
-		articles = json.load(open(os.path.exists(os.path.join(dir, "0_articles.json")), "r"))
+		articles = json.load(open(os.path.exists(os.path.join(dir, "articles.json")), "r"))
 
 	# Filter the articles
 
@@ -108,5 +108,5 @@ if not os.path.exists(dir):
 
 	# Save the data
 
-	with open(os.path.join(dir, "0_filtered_articles.json"), 'w') as outfile:
+	with open(os.path.join(dir, "articles_filt.json"), 'w') as outfile:
 		json.dump(articles, outfile, indent=4)

@@ -239,7 +239,7 @@ category = "COVID-19"
 
 # Select the articles
 
-articles = json.load(open(os.path.join("data", datetime.date.today().strftime("%Y-%m-%d"), "0_filtered_articles.json"), "r"))
+articles = json.load(open(os.path.join("data", datetime.date.today().strftime("%Y-%m-%d"), "articles_filt.json"), "r"))
 
 ####################
 # CREATE DEFAULT FRAME
