@@ -31,7 +31,7 @@ conf = {
 		},
 		"theme": {
 			"size": 120,
-			"pos": (1920 - 130, 30),
+			"pos": (1920 - 130, 60),
 			"max_width": 10000,
 		},
 		"date": {
@@ -45,7 +45,8 @@ conf = {
 		"article": {
 			"image_pos": ("centered", 250),
 			"image_height": 450,
-			"title_pos": ("centered", 700),
+			"title_pos": ("centered", 750),
+			"title_max_width": 45,
 			"font_size": 50
 		},
 		"social": {
@@ -55,8 +56,8 @@ conf = {
 			"pos4": (int(1920 / 2 + 600), 430)
 		},
 		"ad": {
-			"size": 120,
-			"pos": (1920 - 130, 30),
+			"size": 45,
+			"pos": (1920 - 130, 90),
 			"max_width": 10000,
 		},
 	},
@@ -92,6 +93,7 @@ conf = {
 			"image_pos": ("centered", 320),
 			"image_height": 350,
 			"title_pos": ("centered", 720),
+			"title_max_width": 45,
 			"font_size": 25
 		},
 		"social": {
@@ -107,95 +109,97 @@ conf = {
 		},
 	},
 	"snapchat": {
-		"format": (800, 1000),
+		"format": (1080, 1920),
 		"padding": 70,
 		"title1": {
-			"size": 120,
-			"pos": ("centered", 490),
+			"size": 170,
+			"pos": ("centered", 820),
 		},
 		"title2": {
-			"size": 40,
-			"pos": ("centered", 450)
+			"size": 60,
+			"pos": ("centered", 750)
 		},
 		"intro_date": {
-			"size": 30,
-			"pos": ("centered", 840),
+			"size": 70,
+			"pos": ("centered", 1620),
 		},
 		"theme": {
-			"size": 50,
-			"pos": (800 - 70, 200),
-			"max_width": 27,
+			"size": 120,
+			"pos": (1080 - 70, 250),
+			"max_width": 30,
 		},
 		"date": {
-			"size": 30,
-			"pos": ("centered", 840),
+			"size": 70,
+			"pos": ("centered", 1600),
 		},
 		"circle": {
 			"size": 16,
-			"pos": (lambda i, total: (int(800 / 2 - (total * 60 / 2) + (i * 60) + 30), 920)),
+			"pos": (lambda i, total: (int(1080 / 2 - (total * 80 / 2) + (i * 80) + 30), 1800)),
 		},
 		"article": {
-			"image_pos": ("centered", 320),
-			"image_height": 350,
-			"title_pos": ("centered", 720),
-			"font_size": 25
+			"image_pos": ("centered", 580),
+			"image_height": 400,
+			"title_pos": ("centered", 1100),
+			"title_max_width": 27,
+			"font_size": 55
 		},
 		"social": {
-			"pos1": (230, 320),
-			"pos2": (570, 320),
-			"pos3": (230, 570),
-			"pos4": (570, 570)
+			"pos1": (340, 700),
+			"pos2": (740, 700),
+			"pos3": (340, 1150),
+			"pos4": (740, 1150)
 		},
 		"ad": {
-			"size": 35,
-			"pos": (800 - 70, 200),
-			"max_width": 30,
+			"size": 70,
+			"pos": (1080 - 70, 250),
+			"max_width": 20,
 		},
 	},
 	"tiktok": {
 		"format": (1080, 1920),
 		"padding": 70,
 		"title1": {
-			"size": 120,
-			"pos": ("centered", 490),
+			"size": 170,
+			"pos": ("centered", 820),
 		},
 		"title2": {
-			"size": 40,
-			"pos": ("centered", 450)
+			"size": 60,
+			"pos": ("centered", 750)
 		},
 		"intro_date": {
-			"size": 30,
-			"pos": ("centered", 840),
+			"size": 70,
+			"pos": ("centered", 1620),
 		},
 		"theme": {
-			"size": 50,
-			"pos": (800 - 70, 200),
-			"max_width": 27,
+			"size": 120,
+			"pos": (1080 - 70, 250),
+			"max_width": 30,
 		},
 		"date": {
-			"size": 30,
-			"pos": ("centered", 840),
+			"size": 70,
+			"pos": ("centered", 1620),
 		},
 		"circle": {
 			"size": 16,
-			"pos": (lambda i, total: (int(800 / 2 - (total * 40 / 2) + (i * 40) + 30), 920)),
+			"pos": (lambda i, total: (int(1080 / 2 - (total * 80 / 2) + (i * 80) + 30), 1800)),
 		},
 		"article": {
-			"image_pos": ("centered", 320),
-			"image_height": 250,
-			"title_pos": ("centered", 720),
-			"font_size": 25
+			"image_pos": ("centered", 580),
+			"image_height": 400,
+			"title_pos": ("centered", 1100),
+			"title_max_width": 27,
+			"font_size": 55
 		},
 		"social": {
-			"pos1": (230, 320),
-			"pos2": (570, 320),
-			"pos3": (230, 570),
-			"pos4": (570, 570)
+			"pos1": (340, 700),
+			"pos2": (740, 700),
+			"pos3": (340, 1150),
+			"pos4": (740, 1150)
 		},
 		"ad": {
-			"size": 35,
-			"pos": (800 - 70, 200),
-			"max_width": 30,
+			"size": 70,
+			"pos": (1080 - 70, 250),
+			"max_width": 20,
 		},
 	}
 }
@@ -209,13 +213,15 @@ else:
 # INIT
 ####################
 
-if not os.path.exists("tmp"):
-	os.mkdir("tmp")
+output_dir = f"output/{datetime.date.today().strftime('%Y-%m-%d')}"
+
+if not os.path.exists(output_dir):
+	os.mkdir(output_dir)
 
 video_width = conf["format"][0]
 video_height = conf["format"][1]
 
-video_name = f'output/highlite_{sys.argv[1]}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
+video_name = f'{output_dir}/highlite_{sys.argv[1]}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
 fourcc = cv2.VideoWriter_fourcc(*'DIVX')
 video = cv2.VideoWriter(video_name, fourcc, 24, (video_width, video_height))
 
@@ -233,7 +239,7 @@ category = "COVID-19"
 
 # Select the articles
 
-articles = json.load(open(os.path.join("data", datetime.date.today().strftime("%Y-%m-%d"), "articles.json"), "r"))
+articles = json.load(open(os.path.join("data", datetime.date.today().strftime("%Y-%m-%d"), "0_filtered_articles.json"), "r"))
 
 ####################
 # CREATE DEFAULT FRAME
@@ -304,7 +310,7 @@ for i, article in enumerate(articles):
 
 			# Add the content
 
-			frame_a = overlay_text(frame_a, article["title"], conf["article"]["title_pos"], conf["article"]["font_size"], color_bgr_blue, max_width=45, f=y)
+			frame_a = overlay_text(frame_a, article["title"], conf["article"]["title_pos"], conf["article"]["font_size"], color_bgr_blue, max_width=conf["article"]["title_max_width"], f=y)
 			image_logo = resize_image(image_logo, conf["article"]["image_height"] / image_logo.shape[0])
 			frame_a = overlay_image(frame_a, image_logo, conf["article"]["image_pos"], f=y)
 			
