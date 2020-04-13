@@ -1,0 +1,15 @@
+import tweepy
+
+consumer_key = "xxxxxxxxxxxxxxxx"
+consumer_secret = "xxxxxxxxxxxxxxxx"
+access_token = "xxxxxxxxxxxxxxxx"
+access_token_secret = "xxxxxxxxxxxxxxxx"
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+
+# authentication of access token and secret
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
+
+# update the status
+api.update_status(status="Hello Everyone !")
