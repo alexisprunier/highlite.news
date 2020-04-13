@@ -4,8 +4,8 @@ import os
 import random
 import time
 import datetime
-import pathlib
 import json
+from utils.config import PROJECT_PATH
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -27,11 +27,10 @@ API_VERSION = 'v3'
 
 VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 
-project_path = str(pathlib.Path(__file__).parent.parent.parent.absolute())
 today = datetime.date.today().strftime('%Y-%m-%d')
 today_fr = datetime.date.today().strftime('%d-%m-%Y')
-article_path = os.path.join(project_path, "data", today, "articles_filt.json")
-youtube_video_id_path = os.path.join(project_path, "data", today, "youtube_video_id.txt")
+article_path = os.path.join(PROJECT_PATH, "data", today, "articles_filt.json")
+youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, "youtube_video_id.txt")
 
 
 # Authorize the request and store authorization credentials.
@@ -113,7 +112,7 @@ if __name__ == '__main__':
         articles_body += "Article " + i + ":\n" + a["link"] + "\n"
 
     args = {
-        "file": os.path.join(project_path, "output", today, f"highlite_youtube_{today}.avi"),
+        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_youtube_{today}.avi"),
         "title": f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19",
         "description":
             f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19\n"

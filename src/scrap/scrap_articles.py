@@ -92,20 +92,28 @@ articles = [a for a in articles if "covid" in a["title"].lower() or "coronavirus
 articles = [a for i, a in enumerate(articles) if i == [y for y, b in enumerate(articles) if a["title"] == b["title"]][0]]
 
 random.shuffle(articles)
-articles = articles[:10] if len(articles) > 9 else articles
+
 
 # Get the images
 
-for article in articles:
+for i, article in enumerate(articles):
 	saved_image = os.path.join(dir, article['image_url'].split('?')[0].split('/')[-1])
 	request.urlretrieve(article["image_url"], saved_image)
 	image_type = imghdr.what(saved_image)
+	print(image_type)
 
-	if image_type in ("jpg", "jpeg"):
-		im = Image.open(saved_image)
-		im.save(saved_image.split(".")[0] + ".png", "JPEG")
+	if image_type is not None:
+		if image_type in ("jpg", "jpeg"):
+			im = Image.open(saved_image)
+			saved_image = saved_image.split(".")[0] + ".png"
+			im.save(saved_image, "JPEG")
 
-	article["image"] = saved_image[:-4] + ".png"
+		article["image"] = saved_image
+	else:
+		article["image"] = None
+
+articles = [a for a in articles if a["image"] is not None]
+articles = articles[:10] if len(articles) > 9 else articles
 
 # Save the data
 

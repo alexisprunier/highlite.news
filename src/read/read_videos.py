@@ -1,10 +1,10 @@
 import os
 import datetime
-import pathlib
+from utils.config import PROJECT_PATH
 
-project_path = str(pathlib.Path(__file__).parent.parent.parent.absolute())
+
 dir = f"output/{datetime.date.today().strftime('%Y-%m-%d')}"
-absolute_dir = os.path.join(project_path, dir)
+absolute_dir = os.path.join(PROJECT_PATH, dir)
 
-for video in os.listdir(absolute_dir):
+for video in [v for v in os.listdir(absolute_dir) if v.endswith(".mp4")]:
     cmd = os.startfile(os.path.join(absolute_dir, video))
