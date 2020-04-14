@@ -9,6 +9,7 @@ from PIL import Image
 import datetime
 import random
 import imghdr
+from utils.config import PROJECT_PATH
 
 
 articles = []
@@ -59,10 +60,11 @@ pages = [
 	("Le Parisien", "http://www.leparisien.fr/"),
 	("20 Minutes", "https://www.20minutes.fr/"),
 	("La Tribune", "https://www.latribune.fr/"),
+	("L'Obs", "https://www.nouvelobs.com/")
 ]
 
 current_path = str(pathlib.Path(__file__).parent.absolute())
-dir = f"data/{datetime.date.today().strftime('%Y-%m-%d')}"
+dir = os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime('%Y-%m-%d'))
 
 if not os.path.exists(dir):
 	os.mkdir(dir)
@@ -93,19 +95,18 @@ articles = [a for i, a in enumerate(articles) if i == [y for y, b in enumerate(a
 
 random.shuffle(articles)
 
-
 # Get the images
 
 for i, article in enumerate(articles):
 	saved_image = os.path.join(dir, article['image_url'].split('?')[0].split('/')[-1])
-	request.urlretrieve(article["image_url"], saved_image)
+	if not os.path.exists(saved_image):
+		request.urlretrieve(article["image_url"], saved_image)
 	image_type = imghdr.what(saved_image)
-	print(image_type)
 
 	if image_type is not None:
 		if image_type in ("jpg", "jpeg"):
 			im = Image.open(saved_image)
-			saved_image = saved_image.split(".")[0] + ".png"
+			saved_image = ".".join(saved_image.split(".")[:-1]) + ".png"
 			im.save(saved_image, "JPEG")
 
 		article["image"] = saved_image

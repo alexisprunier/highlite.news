@@ -2,6 +2,8 @@ import numpy
 from PIL import ImageFont, ImageDraw, Image
 import textwrap
 from itertools import chain
+import os
+from utils.config import PROJECT_PATH
 
 
 def overlay_highlight_frame(img):
@@ -49,7 +51,7 @@ def overlay_text(img, text, pos, size, color, max_width=None, pos_type="left", f
 
     img_pil = Image.fromarray(img).convert('RGBA')
     draw = ImageDraw.Draw(img_pil)
-    font = ImageFont.truetype("static/font/bungee/Bungee-Regular.otf", size)
+    font = ImageFont.truetype(os.path.join(PROJECT_PATH, "static/font/bungee/Bungee-Regular.otf"), size)
 
     if f is not None:
         color = color + (int(f / 20 * 255),)

@@ -10,7 +10,6 @@ import copy
 from PIL import Image, ImageFont, ImageDraw
 import math
 import sys
-import pathlib
 import subprocess
 from utils.config import PROJECT_PATH
 
@@ -64,7 +63,7 @@ conf = {
 		},
 	},
 	"instagram": {
-		"format": (800, 1000),
+		"format": (920, 1080),
 		"padding": 70,
 		"title1": {
 			"size": 120,
@@ -215,7 +214,7 @@ else:
 # INIT
 ####################
 
-output_dir = f"output/{datetime.date.today().strftime('%Y-%m-%d')}"
+output_dir = os.path.join(PROJECT_PATH, "output", datetime.date.today().strftime('%Y-%m-%d'))
 
 if not os.path.exists(output_dir):
 	os.mkdir(output_dir)
@@ -250,17 +249,17 @@ category = "COVID-19"
 
 # Select the articles
 
-articles = json.load(open(os.path.join("data", datetime.date.today().strftime("%Y-%m-%d"), "articles_filt.json"), "r"))
+articles = json.load(open(os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime("%Y-%m-%d"), "articles_filt.json"), "r"))
 
 ####################
 # CREATE DEFAULT FRAME
 ####################
 
-img_background = cv2.imread('static/img/background/background-covid.jpg', -1)
+img_background = cv2.imread(os.path.join(PROJECT_PATH, 'static/img/background/background-covid.jpg'), -1)
 if conf["format"][0] > len(img_background[0]) or conf["format"][1] > len(img_background):
 	img_background = resize_image(img_background, 2)
 img_background = crop_image_in_center(img_background, video_width, video_height)
-img_logo = cv2.imread('static/img/logo/Highlite125x400.png', -1)
+img_logo = cv2.imread(os.path.join(PROJECT_PATH, 'static/img/logo/Highlite125x400.png'), -1)
 
 default_frame = apply_dark_effect(img_background)
 default_frame = overlay_highlight_frame(img_background)
@@ -281,7 +280,7 @@ for i in range(0, len(articles)):
 
 image_intro = copy.copy(default_frame)
 
-font = ImageFont.truetype("static/font/bungee/Bungee-Regular.otf", 300)
+font = ImageFont.truetype(os.path.join(PROJECT_PATH, "static/font/bungee/Bungee-Regular.otf"), 300)
 img_pil = Image.fromarray(default_frame)
 draw = ImageDraw.Draw(img_pil)
 w, h = draw.textsize(category, font=font)
@@ -302,7 +301,7 @@ frame = copy.copy(default_frame)
 frame = overlay_text(frame, "COVID-19", conf["theme"]["pos"], conf["theme"]["size"], color_bgr_dark_yellow, pos_type="right")
 frame = overlay_text(frame, today, conf["date"]["pos"], conf["date"]["size"], color_bgr_blue, pos_type="right")
 
-images_splash = read_webp('static/img/splash1.webp')
+images_splash = read_webp(os.path.join(PROJECT_PATH, 'static/img/splash1.webp'))
 
 # Generate for each article
 	
@@ -336,13 +335,13 @@ for i, article in enumerate(articles):
 
 frame = copy.copy(default_frame)
 
-image_twitter = cv2.imread("static/img/social-network/twitter512x512.png", cv2.IMREAD_UNCHANGED)
+image_twitter = cv2.imread(os.path.join(PROJECT_PATH, "static/img/social-network/twitter512x512.png"), cv2.IMREAD_UNCHANGED)
 image_twitter = resize_image(image_twitter, 0.25)
-image_tiktok = cv2.imread("static/img/social-network/tiktok512x512.png", cv2.IMREAD_UNCHANGED)
+image_tiktok = cv2.imread(os.path.join(PROJECT_PATH, "static/img/social-network/tiktok512x512.png"), cv2.IMREAD_UNCHANGED)
 image_tiktok = resize_image(image_tiktok, 0.25)
-image_instagram = cv2.imread("static/img/social-network/instagram512x512.png", cv2.IMREAD_UNCHANGED)
+image_instagram = cv2.imread(os.path.join(PROJECT_PATH, "static/img/social-network/instagram512x512.png"), cv2.IMREAD_UNCHANGED)
 image_instagram = resize_image(image_instagram, 0.25)
-image_snapchat = cv2.imread("static/img/social-network/snapchat128x128.png", cv2.IMREAD_UNCHANGED)
+image_snapchat = cv2.imread(os.path.join(PROJECT_PATH, "static/img/social-network/snapchat128x128.png"), cv2.IMREAD_UNCHANGED)
 
 pos_el1 = int(video_width / 2 - 600)
 pos_el2 = int(video_width / 2 - 200)
@@ -384,7 +383,7 @@ video.release()
 ####################
 
 mov = movie(avi_video_abs_path)
-mus = music('./static/sound/Digital_Memories.mp3')
+mus = music(os.path.join(PROJECT_PATH, 'static/sound/Digital_Memories.mp3'))
 final = mov + mus
 final.save(tmp_mp4_video_abs_path)
 
@@ -399,3 +398,18 @@ subprocess.call(['ffmpeg', '-i', tmp_mp4_video_abs_path, '-y', '-nostdin', '-ss'
 
 os.remove(avi_video_abs_path)
 os.remove(tmp_mp4_video_abs_path)
+
+####################
+# SNAPCHAT SPLIT
+####################
+
+if sys.argv[1] == "snapchat":
+	split = [4] + [5 for _ in articles] + [6]
+	start_time = 0
+
+	for i, s in enumerate(split):
+		output_name = f"{'.'.join(mp4_video_abs_path.split('.')[:-1])}_{i+1}.mp4"
+		subprocess.call(['ffmpeg', '-i', mp4_video_abs_path, '-y', '-nostdin', '-ss', str(start_time), '-t', str(s), output_name])
+		start_time += s
+
+	os.remove(mp4_video_abs_path)
