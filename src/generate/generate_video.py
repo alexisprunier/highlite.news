@@ -63,49 +63,49 @@ conf = {
 		},
 	},
 	"instagram": {
-		"format": (920, 1080),
+		"format": (1080, 1080),
 		"padding": 70,
 		"title1": {
-			"size": 120,
-			"pos": ("centered", 490),
+			"size": 140,
+			"pos": ("centered", 500),
 		},
 		"title2": {
-			"size": 40,
+			"size": 55,
 			"pos": ("centered", 450)
 		},
 		"intro_date": {
-			"size": 30,
-			"pos": ("centered", 840),
+			"size": 50,
+			"pos": ("centered", 890),
 		},
 		"theme": {
 			"size": 50,
-			"pos": (800 - 70, 200),
+			"pos": (1080 - 70, 200),
 			"max_width": 23,
 		},
 		"date": {
-			"size": 30,
-			"pos": ("centered", 840),
+			"size": 50,
+			"pos": ("centered", 890),
 		},
 		"circle": {
 			"size": 16,
-			"pos": (lambda i, total: (int(800 / 2 - (total * 60 / 2) + (i * 60) + 30), 920)),
+			"pos": (lambda i, total: (int(1080 / 2 - (total * 60 / 2) + (i * 60) + 30), 990)),
 		},
 		"article": {
 			"image_pos": ("centered", 320),
 			"image_height": 350,
 			"title_pos": ("centered", 720),
-			"title_max_width": 45,
-			"font_size": 25
+			"title_max_width": 40,
+			"font_size": 35
 		},
 		"social": {
-			"pos1": (230, 320),
-			"pos2": (570, 320),
-			"pos3": (230, 570),
-			"pos4": (570, 570)
+			"pos1": (330, 340),
+			"pos2": (750, 340),
+			"pos3": (330, 600),
+			"pos4": (750, 600)
 		},
 		"ad": {
 			"size": 35,
-			"pos": (800 - 70, 200),
+			"pos": (1080 - 70, 200),
 			"max_width": 30,
 		},
 	},

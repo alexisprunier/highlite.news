@@ -121,7 +121,7 @@ if __name__ == '__main__':
             "\n"
             f'{articles_body}'
             "\n"
-            "Suivez-nous sur les différents réseaux:\,"
+            "Suivez-nous sur les différents réseaux:\n"
             "\n"
             "Twitter: @highlitenews\n"
             "Instagram: @highlite.news\n"

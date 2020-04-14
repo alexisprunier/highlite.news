@@ -114,7 +114,6 @@ for i, article in enumerate(articles):
 		article["image"] = None
 
 articles = [a for a in articles if a["image"] is not None]
-articles = articles[:10] if len(articles) > 9 else articles
 
 # Save the data
 
