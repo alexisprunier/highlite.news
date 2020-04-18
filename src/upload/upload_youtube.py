@@ -6,6 +6,7 @@ import time
 import datetime
 import json
 from utils.config import PROJECT_PATH
+import sys
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -27,10 +28,11 @@ API_VERSION = 'v3'
 
 VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 
+category = sys.argv[1]
 today = datetime.date.today().strftime('%Y-%m-%d')
 today_fr = datetime.date.today().strftime('%d-%m-%Y')
-article_path = os.path.join(PROJECT_PATH, "data", today, "articles_COVID-19.json")
-youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, "youtube_video_id.txt")
+article_path = os.path.join(PROJECT_PATH, "data", today, f"articles_{category}_filtered.json")
+youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, f"youtube_video_id_{category}.txt")
 
 
 # Authorize the request and store authorization credentials.
@@ -112,10 +114,10 @@ if __name__ == '__main__':
         articles_body += "Article " + str(i+1) + ": " + str(a["link"]) + "\n"
 
     args = {
-        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_youtube_{today}.mp4"),
-        "title": f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19",
+        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_{category}_youtube_{today}.mp4"),
+        "title": f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}",
         "description":
-            f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le COVID-19\n"
+            f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n"
             "\n"
             "Lien des articles:\n"
             "\n"
@@ -128,7 +130,7 @@ if __name__ == '__main__':
             "Snapchat: @highlite.news\n"
             "TikTok: @highlite.news\n",
         "category": 25,
-        "keywords": "coronavirus, covid19, covid, news, actualités",
+        "keywords": "highlite, highlight, news, actualités",
         "privacyStatus": "public"
     }
 
