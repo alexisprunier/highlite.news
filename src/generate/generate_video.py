@@ -177,7 +177,7 @@ conf = {
 			"max_width": 30,
 		},
 		"date": {
-			"size": 70,
+			"size": 55,
 			"pos": ("centered", 1620),
 		},
 		"circle": {
@@ -300,7 +300,7 @@ for n in range(4 * 24):
 
 frame = copy.copy(default_frame)
 
-frame = overlay_text(frame, "COVID-19", conf["theme"]["pos"], conf["theme"]["size"], color_bgr_dark_yellow, pos_type="right")
+frame = overlay_text(frame, category, conf["theme"]["pos"], conf["theme"]["size"], color_bgr_dark_yellow, pos_type="right")
 frame = overlay_text(frame, today, conf["date"]["pos"], conf["date"]["size"], color_bgr_blue, pos_type="right")
 
 images_splash = read_webp(os.path.join(PROJECT_PATH, 'static/img/splash1.webp'))
