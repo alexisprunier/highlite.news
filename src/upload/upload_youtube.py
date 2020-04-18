@@ -20,7 +20,7 @@ RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, http.client.NotConnecte
                         http.client.CannotSendRequest, http.client.CannotSendHeader,
                         http.client.ResponseNotReady, http.client.BadStatusLine)
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
-CLIENT_SECRETS_FILE = '../../credentials/client_secret.json'
+CLIENT_SECRETS_FILE = os.path.join(PROJECT_PATH, "credentials", "client_secret.json")
 
 SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
 API_SERVICE_NAME = 'youtube'
