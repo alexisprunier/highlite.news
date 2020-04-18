@@ -351,9 +351,9 @@ pos_el3 = int(video_width / 2 + 200)
 pos_el4 = int(video_width / 2 + 600)
 
 for y, _ in enumerate(range(6 * 24)):
-	txt = "Thanks for watching..."
+	txt = "Liens sur: www.highlite.news"
 	frame = overlay_text(default_frame, txt, conf["date"]["pos"], conf["date"]["size"], color_bgr_blue, pos_type="right", f=max(0, y))
-	txt = "Nouvelle vidéo COVID-19 tous les jours à 19h"
+	txt = f"Nouvelle vidéo {category} tous les jours à 19h"
 	frame = overlay_text(frame, txt, conf["ad"]["pos"], conf["ad"]["size"], color_bgr_dark_yellow, pos_type="right", max_width=conf["ad"]["max_width"])
 
 	frame = overlay_image(frame, image_twitter, conf["social"]["pos1"], pos_type="middle", f=max(0, y))
@@ -385,7 +385,7 @@ video.release()
 ####################
 
 mov = movie(avi_video_abs_path)
-mus = music(os.path.join(PROJECT_PATH, 'static/sound/Digital_Memories.mp3'))
+mus = music(os.path.join(PROJECT_PATH, f'static/sound/sound_{category}.mp3'))
 final = mov + mus
 final.save(tmp_mp4_video_abs_path)
 
