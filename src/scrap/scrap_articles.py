@@ -53,8 +53,8 @@ def traverse(source, base_url, soup, level):
 
 articles = []
 category = sys.argv[1]
-sources = db.open("source")
-filters = db.open("source")
+sources = db.read("source")
+filters = db.read("filter")
 
 if category in sources:
 	sources = sources[category]
@@ -76,28 +76,28 @@ if not os.path.exists(dir):
 
 # Get the articles
 
-if not os.path.exists(os.path.join(dir, "articles.json")):
+if not os.path.exists(os.path.join(dir, f"articles_{category}.json")):
 
-	for source, url in sources:
+	for source in sources:
 		driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
-		driver.get(url)
+		driver.get(source["url"])
 		html = driver.page_source
 		soup = BeautifulSoup(html)
 		[x.extract() for x in soup.find_all('noscript')]
-		traverse(source, url, soup, 0)
+		traverse(source["source"], source["url"], soup, 0)
 
 	with open(os.path.join(dir, f"articles_{category}.json"), 'w') as outfile:
 		json.dump(articles, outfile, indent=4)
 
 else:
-	articles = json.load(open(os.path.join(dir, "articles.json"), "r"))
+	articles = json.load(open(os.path.join(dir, f"articles_{category}.json"), "r"))
 
 # Filter the articles
 
 articles = [a for a in articles if a["image_url"] is not None]
 
 if "contain" in filters:
-	articles = [a for a in articles if len([_ for _ in filters["contains"] if _ in a["title"].lower()]) > 0]
+	articles = [a for a in articles if len([_ for _ in filters["contain"] if _ in a["title"].lower()]) > 0]
 
 articles = [a for i, a in enumerate(articles) if i == [y for y, b in enumerate(articles) if a["title"] == b["title"]][0]]
 
@@ -111,8 +111,13 @@ if not os.path.exists(os.path.join(dir, 'img')):
 for i, article in enumerate(articles):
 	saved_image = os.path.join(dir, 'img', article['image_url'].split('?')[0].split('/')[-1])
 	if not os.path.exists(saved_image):
-		request.urlretrieve(article["image_url"], saved_image)
-	image_type = imghdr.what(saved_image)
+		try:
+			request.urlretrieve(article["image_url"], saved_image)
+		except Exception as e:
+			print(e, "ON THIS URL :", article["image_url"])
+			saved_image = None
+
+	image_type = imghdr.what(saved_image) if saved_image is not None else None
 
 	if image_type is not None:
 		if image_type in ("jpg", "jpeg"):
