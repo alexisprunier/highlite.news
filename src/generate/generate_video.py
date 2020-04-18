@@ -205,10 +205,13 @@ conf = {
 	}
 }
 
-if sys.argv[1] in conf:
-	conf = conf[sys.argv[1]]
+if sys.argv[2] in conf:
+	conf = conf[sys.argv[2]]
+	format = sys.argv[2]
 else:
 	sys.exit()
+
+category = sys.argv[1]
 
 ####################
 # INIT
@@ -219,7 +222,7 @@ output_dir = os.path.join(PROJECT_PATH, "output", datetime.date.today().strftime
 if not os.path.exists(output_dir):
 	os.mkdir(output_dir)
 
-avi_video_name = f'highlite_{sys.argv[1]}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
+avi_video_name = f'highlite_{category}_{format}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
 mp4_video_name = f"{avi_video_name.split('.')[0]}.mp4"
 tmp_mp4_video_name = f"tmp_{avi_video_name.split('.')[0]}.mp4"
 avi_video_rel_path = f'{output_dir}/{avi_video_name}'
@@ -245,17 +248,16 @@ color_bgr_dark_yellow = (64, 204, 255)
 color_bgr_blue = (243, 242, 151)
 color_bgr_dark_blue = (255, 196, 55)
 
-category = "COVID-19"
+# Get the articles
 
-# Select the articles
-
-articles = json.load(open(os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime("%Y-%m-%d"), "articles_filt.json"), "r"))
+art_fn = f"articles_{category}_filtered.json"
+articles = json.load(open(os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime("%Y-%m-%d"), art_fn), "r"))
 
 ####################
 # CREATE DEFAULT FRAME
 ####################
 
-img_background = cv2.imread(os.path.join(PROJECT_PATH, 'static/img/background/background-covid.jpg'), -1)
+img_background = cv2.imread(os.path.join(PROJECT_PATH, 'static', 'img', 'background', f"background_{category}.jpg"), -1)
 if conf["format"][0] > len(img_background[0]) or conf["format"][1] > len(img_background):
 	img_background = resize_image(img_background, 2)
 img_background = crop_image_in_center(img_background, video_width, video_height)
@@ -400,16 +402,14 @@ os.remove(avi_video_abs_path)
 os.remove(tmp_mp4_video_abs_path)
 
 ####################
-# SNAPCHAT SPLIT
+# SNAPCHAT SPLIT WITH THE TIKTOK FORMAT
 ####################
 
-if sys.argv[1] == "snapchat":
+if format == "tiktok":
 	split = [4] + [5 for _ in articles] + [6]
 	start_time = 0
 
 	for i, s in enumerate(split):
-		output_name = f"{'.'.join(mp4_video_abs_path.split('.')[:-1])}_{i+1}.mp4"
+		output_name = f"{'.'.join(mp4_video_abs_path.split('.')[:-1])}_{i+1}.mp4".replace("tiktok", "snapchat")
 		subprocess.call(['ffmpeg', '-i', mp4_video_abs_path, '-y', '-nostdin', '-ss', str(start_time), '-t', str(s), output_name])
 		start_time += s
-
-	os.remove(mp4_video_abs_path)

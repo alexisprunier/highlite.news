@@ -10,9 +10,8 @@ import datetime
 import random
 import imghdr
 from utils.config import PROJECT_PATH
-
-
-articles = []
+from db import db
+import sys
 
 
 def traverse(source, base_url, soup, level):
@@ -41,7 +40,7 @@ def traverse(source, base_url, soup, level):
 					
 				articles.append({
 					"title": paragraphs[0].strip(),
-					"source": source,
+					"source.json": source,
 					"link": urls[0] if len(urls) > 0 else None,
 					"image_url": image,
 					"time": times[0] if len(times) > 0 else None
@@ -52,16 +51,22 @@ def traverse(source, base_url, soup, level):
 				traverse(source, base_url, child, level + 1)
 
 
-pages = [
-	("Ouest France", "https://www.lemonde.fr/"),
-	("Ouest France", "https://www.liberation.fr/"),
-	("Les Echos", "https://www.lesechos.fr/"),
-	("Le Figaro", "https://www.lefigaro.fr/"),
-	("Le Parisien", "http://www.leparisien.fr/"),
-	("20 Minutes", "https://www.20minutes.fr/"),
-	("La Tribune", "https://www.latribune.fr/"),
-	("L'Obs", "https://www.nouvelobs.com/")
-]
+articles = []
+category = sys.argv[1]
+sources = db.open("source")
+filters = db.open("source")
+
+if category in sources:
+	sources = sources[category]
+else:
+	print("category not found in sources, review argument 1")
+	exit()
+
+if category in filters:
+	filters = filters[category]
+else:
+	print("category not found in filters, review argument 1")
+	exit()
 
 current_path = str(pathlib.Path(__file__).parent.absolute())
 dir = os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime('%Y-%m-%d'))
@@ -73,7 +78,7 @@ if not os.path.exists(dir):
 
 if not os.path.exists(os.path.join(dir, "articles.json")):
 
-	for source, url in pages:
+	for source, url in sources:
 		driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
 		driver.get(url)
 		html = driver.page_source
@@ -81,7 +86,7 @@ if not os.path.exists(os.path.join(dir, "articles.json")):
 		[x.extract() for x in soup.find_all('noscript')]
 		traverse(source, url, soup, 0)
 
-	with open(os.path.join(dir, "articles.json"), 'w') as outfile:
+	with open(os.path.join(dir, f"articles_{category}.json"), 'w') as outfile:
 		json.dump(articles, outfile, indent=4)
 
 else:
@@ -90,15 +95,21 @@ else:
 # Filter the articles
 
 articles = [a for a in articles if a["image_url"] is not None]
-articles = [a for a in articles if "covid" in a["title"].lower() or "coronavirus" in a["title"].lower()]
+
+if "contain" in filters:
+	articles = [a for a in articles if len([_ for _ in filters["contains"] if _ in a["title"].lower()]) > 0]
+
 articles = [a for i, a in enumerate(articles) if i == [y for y, b in enumerate(articles) if a["title"] == b["title"]][0]]
 
 random.shuffle(articles)
 
 # Get the images
 
+if not os.path.exists(os.path.join(dir, 'img')):
+	os.mkdir(os.path.join(dir, 'img'))
+
 for i, article in enumerate(articles):
-	saved_image = os.path.join(dir, article['image_url'].split('?')[0].split('/')[-1])
+	saved_image = os.path.join(dir, 'img', article['image_url'].split('?')[0].split('/')[-1])
 	if not os.path.exists(saved_image):
 		request.urlretrieve(article["image_url"], saved_image)
 	image_type = imghdr.what(saved_image)
@@ -106,7 +117,7 @@ for i, article in enumerate(articles):
 	if image_type is not None:
 		if image_type in ("jpg", "jpeg"):
 			im = Image.open(saved_image)
-			saved_image = ".".join(saved_image.split(".")[:-1]) + ".png"
+			saved_image = (".".join(saved_image.split(".")[:-1]) if "." in saved_image[-5:] else saved_image) + ".png"
 			im.save(saved_image, "JPEG")
 
 		article["image"] = saved_image
@@ -117,5 +128,5 @@ articles = [a for a in articles if a["image"] is not None]
 
 # Save the data
 
-with open(os.path.join(dir, "articles_filt.json"), 'w') as outfile:
+with open(os.path.join(dir, f"articles_{category}_filtered.json"), 'w') as outfile:
 	json.dump(articles, outfile, indent=4)

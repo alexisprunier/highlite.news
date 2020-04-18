@@ -29,7 +29,7 @@ VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 
 today = datetime.date.today().strftime('%Y-%m-%d')
 today_fr = datetime.date.today().strftime('%d-%m-%Y')
-article_path = os.path.join(PROJECT_PATH, "data", today, "articles_filt.json")
+article_path = os.path.join(PROJECT_PATH, "data", today, "articles_COVID-19.json")
 youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, "youtube_video_id.txt")
 
 
