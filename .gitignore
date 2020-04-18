@@ -2,3 +2,6 @@
 .idea/*
 data/*
 output/*
+webapp/node_modules/*
+webapp/build/*
+webapp/package-lock.json

@@ -1,0 +1,42 @@
+{
+  "name": "highlite-react",
+  "version": "1.3.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^3.9.4",
+    "fetch-mock": "^6.4.1",
+    "html-to-react": "^1.4.2",
+    "jest-fetch-mock": "^2.1.2",
+    "react": "^16.12.0",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.12.0",
+    "react-scripts": "2.0.3",
+    "why-did-you-update": "^0.1.1"
+  },
+  "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.623.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.4",
+    "identity-obj-proxy": "^3.0.0",
+    "react-test-renderer": "^16.12.0"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
