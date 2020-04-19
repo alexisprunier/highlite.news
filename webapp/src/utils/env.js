@@ -4,7 +4,7 @@ export function getApiURL() {
     if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "")
         return "http://127.0.0.1:5000/";
     else
-        return "https://api." + window.location.hostname + "/";
+        return "https://" + window.location.hostname + "/";
 }
 
 export function isInternetExplorer() {
