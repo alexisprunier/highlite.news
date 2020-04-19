@@ -3,15 +3,15 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from webserv.pattern.singleton import Singleton
-from flask_sqlalchemy import SQLAlchemy
 from utils.config import DB_URI
+import datetime
 
 
 class DB(metaclass=Singleton):
 
     engine = None
 
-    def __init__(self, application=None):
+    def __init__(self):
         db_uri = URL(**DB_URI)
 
         self.engine = create_engine(db_uri, pool_recycle=100, pool_pre_ping=True)
@@ -90,3 +90,13 @@ class DB(metaclass=Singleton):
         if ".Smowg" in str(table):
             self.session.query(table).delete()
             self.session.commit()
+
+    ###############
+    # GLOBAL      #
+    ###############
+
+    def get_article_of_the_day(self, category):
+        rows = self.session.query(self.instance.tables["Article"]) \
+            .filter(self.instance.tables["Article"].category == category) \
+            .filter(self.instance.tables["Article"].scrap_date == datetime.date.now()).all()
+        return rows
