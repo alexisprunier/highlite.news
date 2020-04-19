@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from "./component/Menu";
 import PageHome from "./component/PageHome";
+import PageVote from "./component/PageVote";
 import "./App.css";
 
 
@@ -21,7 +22,7 @@ class App extends React.Component {
     }
 
     changeMenu(menu) {
-        this.setState({ menu: menu })
+        this.setState({ selectedMenu: menu })
     }
 
     render() {
@@ -30,6 +31,9 @@ class App extends React.Component {
                 <div id="content">
                     {this.state.selectedMenu == "HOME" ?
                         <PageHome/>
+                    : ""}
+                    {this.state.selectedMenu == "VOTE" ?
+                        <PageVote/>
                     : ""}
                 </div>
                 <div id="background"/>
