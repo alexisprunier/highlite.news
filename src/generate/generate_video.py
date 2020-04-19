@@ -1,7 +1,6 @@
 import cv2
 import os
 import datetime
-import json
 from utils.modify_image import apply_dark_effect, resize_image, crop_image_in_center
 from utils.overlay_image import overlay_image, overlay_highlight_frame, overlay_text
 from mhmovie.code import movie, music
@@ -12,6 +11,7 @@ import math
 import sys
 import subprocess
 from utils.config import PROJECT_PATH
+from db.db import DB
 
 
 conf = {
@@ -248,10 +248,12 @@ color_bgr_dark_yellow = (64, 204, 255)
 color_bgr_blue = (243, 242, 151)
 color_bgr_dark_blue = (255, 196, 55)
 
+today = datetime.date.today().strftime("%d-%m-%Y")
+
 # Get the articles
 
-art_fn = f"articles_{category}_filtered.json"
-articles = json.load(open(os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime("%Y-%m-%d"), art_fn), "r"))
+db = DB()
+articles = db.get_article_of_the_day(category)
 
 ####################
 # CREATE DEFAULT FRAME
@@ -266,8 +268,6 @@ img_logo = cv2.imread(os.path.join(PROJECT_PATH, 'static/img/logo/Highlite125x40
 default_frame = apply_dark_effect(img_background)
 default_frame = overlay_highlight_frame(img_background)
 default_frame = overlay_image(default_frame, img_logo, (50, 50))
-
-today = datetime.date.today().strftime("%d-%m-%Y")
 
 # Add the circles
 
