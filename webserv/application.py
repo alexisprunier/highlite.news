@@ -3,6 +3,7 @@ from flask import render_template
 from flask_cors import CORS
 from flask import Flask
 from webserv.resource.get_videos import GetVideos
+from webserv.resource.get_articles import GetArticles
 from utils.config import DB_URI
 from db.db import DB
 from sqlalchemy.engine.url import URL
@@ -22,6 +23,7 @@ db = DB()
 # Routes
 
 api.add_resource(GetVideos, '/r/get_videos', resource_class_kwargs={"db": db})
+api.add_resource(GetArticles, '/r/get_articles', resource_class_kwargs={"db": db})
 
 
 @application.route('/<generic>')
