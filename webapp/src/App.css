@@ -16,30 +16,26 @@ html, body {
     overflow-y: hidden;
 }
 
-#app:before {
-    content:"";
-    display:block;
-    position:absolute;
-    z-index: 1;
+#container {
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
     top:4px;
     left:4px;
     right:4px;
     bottom:4px;
     border:4px solid #F3F279;
+    
 }
 
-#container {
-    z-index: 6;
-    width: 100%;
-    height: 100%;
+#content {
+    width: calc(100% - 30px);
+    height: calc(100% - 215px);
+    padding: 15px 15px 200px 15px;
     background: url(/img/bg.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     filter: brightness(30%);
-}
-
-#content {
     z-index: 7;
 }
