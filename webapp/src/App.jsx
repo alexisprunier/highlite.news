@@ -20,7 +20,7 @@ class App extends React.Component {
         return (
             <div id="container">
                 <div id="content">
-
+                    <i class="fab fa-twitter"></i>
                 </div>            
                 <Menu/>
             </div>

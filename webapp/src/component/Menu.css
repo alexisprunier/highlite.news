@@ -1,7 +1,7 @@
 
 .menu {
     position: absolute;
-    bottom: 60px;
+    bottom: 70px;
     left: 50%;
 }
 
@@ -21,22 +21,20 @@
 
 .cn-button {
     position: absolute;
-    top: 100%;
-    left: 50%;
+    top: -32px;
+    left: calc(50% - 25px);
     z-index: 11;
-    margin-top: -2.25em;
-    margin-left: -2.25em;
-    padding-top: 0em;
-    width: 4.5em;
-    height: 4.5em;
+    padding-top: 4px;
+    width: 50px;
+    height: 50px;
     border: none;
     border-radius: 50%;
     background: none;
-    background-color: #fff;
-    color: #52be7f;
+    background-color: #FFCC40;
+    color: white;
     text-align: center;
     font-weight: 700;
-    font-size: 1.5em;
+    font-size: 30px;
     text-transform: uppercase;
     cursor: pointer;
     -webkit-backface-visibility: hidden;
@@ -44,7 +42,7 @@
 
 .csstransforms .cn-wrapper {
     position: absolute;
-    top: 100%;
+    bottom: -14.3em;
     left: 50%;
     z-index: 10;
     margin-top: -13em;
@@ -97,7 +95,7 @@
 
 .csstransforms .cn-wrapper li {
     position: absolute;
-    top: 50%;
+    top: 0%;
     left: 50%;
     overflow: hidden;
     margin-top: -1.3em;
@@ -126,10 +124,10 @@
     width: 14.5em;
     height: 14.5em;
     border-radius: 50%;
-    background: #429a67;
-    background: -webkit-radial-gradient(transparent 35%, #429a67 35%);
-    background: -moz-radial-gradient(transparent 35%, #429a67 35%);
-    background: radial-gradient(transparent 35%, #429a67 35%);
+    background: #FFCC40;
+    background: -webkit-radial-gradient(transparent 35%, #FFCC40 35%);
+    background: -moz-radial-gradient(transparent 35%, #FFCC40 35%);
+    background: radial-gradient(transparent 35%, #FFCC40 35%);
     color: #fff;
     text-align: center;
     text-decoration: none;
@@ -146,9 +144,9 @@
 
 .csstransforms .cn-wrapper li a span {
     position: relative;
-    top: 1.8em;
+    top: 0.8em;
     display: block;
-    font-size: .5em;
+    font-size: 1em;
     font-weight: 700;
     text-transform: uppercase;
 }
@@ -156,9 +154,10 @@
 .csstransforms .cn-wrapper li a:hover,
 .csstransforms .cn-wrapper li a:active,
 .csstransforms .cn-wrapper li a:focus {
-    background: -webkit-radial-gradient(transparent 35%, #449e6a 35%);
-    background: -moz-radial-gradient(transparent 35%, #449e6a 35%);
-    background: radial-gradient(transparent 35%, #449e6a 35%);
+    background: -webkit-radial-gradient(transparent 35%, #FFCC40 35%);
+    background: -moz-radial-gradient(transparent 35%, #FFCC40 35%);
+    background: radial-gradient(transparent 35%, #FFCC40 35%);
+    filter: brightness(80%);
 }
 .csstransforms .cn-wrapper li a:focus {
     position: fixed; /* fix the displacement bug in webkit browsers when using tab key */
