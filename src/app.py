@@ -5,7 +5,7 @@ from utils.config import PROJECT_PATH
 scrap_script = os.path.join(PROJECT_PATH, "src", "scrap", "scrap_articles.py")
 
 #os.system(f"{scrap_script} COVID-19")
-#os.system(f"{scrap_script} FOOTBALL")
+os.system(f"{scrap_script} FOOTBALL")
 
 generate_script = os.path.join(PROJECT_PATH, "src", "generate", "generate_video.py")
 
@@ -20,8 +20,8 @@ generate_script = os.path.join(PROJECT_PATH, "src", "generate", "generate_video.
 upload_youtube_script = os.path.join(PROJECT_PATH, "src", "upload", "upload_youtube.py")
 upload_twitter_script = os.path.join(PROJECT_PATH, "src", "upload", "upload_twitter.py")
 
-os.system(f"{upload_youtube_script} COVID-19")
-os.system(f"{upload_twitter_script} COVID-19")
+#os.system(f"{upload_youtube_script} COVID-19")
+#os.system(f"{upload_twitter_script} COVID-19")
 
-os.system(f"{upload_youtube_script} FOOTBALL")
-os.system(f"{upload_twitter_script} FOOTBALL")
+#os.system(f"{upload_youtube_script} FOOTBALL")
+#os.system(f"{upload_twitter_script} FOOTBALL")

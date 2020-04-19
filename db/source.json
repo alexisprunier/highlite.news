@@ -11,11 +11,6 @@
     {"source": "L'Obs", "url": "https://www.nouvelobs.com/"}
   ],
   "FOOTBALL": [
-    {"source": "L'Equipe", "url": "https://www.lequipe.fr/Football/"},
-    {"source": "France Football", "url": "https://www.francefootball.fr/"},
-    {"source": "Maxifoot", "url": "http://www.maxifoot.fr/"},
-    {"source": "Foot365", "url": "https://www.football365.fr/"},
-    {"source": "So Foot", "url": "https://www.sofoot.com/"},
     {"source": "Foot Mercato", "url": "http://www.footmercato.net/"}
   ]
 }

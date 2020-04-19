@@ -1,0 +1,46 @@
+
+CREATE DATABASE Highlite;
+
+USE Highlite;
+
+CREATE TABLE Video (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(255) NOT NULL,
+    youtube_id VARCHAR(20),
+    category VARCHAR(20) NOT NULL,
+    creation_date DATE NOT NULL
+) ENGINE=INNODB;
+
+CREATE TABLE Article (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(510) NOT NULL UNIQUE,
+	source VARCHAR(50) NOT NULL,
+	category VARCHAR(20) NOT NULL,
+    url VARCHAR(510),
+    image_url VARCHAR(510) NOT NULL,
+    image LONGBLOB,
+    publication_time VARCHAR(50),
+    scrap_date DATE NOT NULL
+) ENGINE=INNODB;
+
+CREATE TABLE VideoArticle (
+    video_id INT NOT NULL,
+    article_id INT NOT NULL,
+    pos INT NOT NULL,
+    PRIMARY KEY (video_id, article_id),
+    CONSTRAINT FK_VIDEO_1 FOREIGN KEY (video_id)
+        REFERENCES `Video`(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_ARTICLE_1 FOREIGN KEY (article_id)
+        REFERENCES `Article`(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB;
+
+CREATE TABLE ArticleVote (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    article_id INT NOT NULL,
+    ip INT NOT NULL,
+    CONSTRAINT FK_ARTICLE_2 FOREIGN KEY (article_id)
+        REFERENCES `Article`(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB;

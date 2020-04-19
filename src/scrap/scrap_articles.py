@@ -1,20 +1,20 @@
 from bs4 import BeautifulSoup
 import re
 from selenium import webdriver
-import json
-import pathlib
 import os
 from urllib import request
 from PIL import Image
-import datetime
 import random
 import imghdr
-from utils.config import PROJECT_PATH
-from db import db
 import sys
+import datetime
+from db.db import DB
+import json
+from utils.config import PROJECT_PATH
+from io import BytesIO
 
 
-def traverse(source, base_url, soup, level):
+def traverse(source, category, base_url, soup, level):
 	if soup.name is not None:
 		if level >= 4:
 			urls = re.findall(r"(?:http|ftp|https):\/\/(?:[\w_-]+(?:(?:\.[\w_-]+)+))(?:[\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?", str(soup))
@@ -40,21 +40,25 @@ def traverse(source, base_url, soup, level):
 					
 				articles.append({
 					"title": paragraphs[0].strip(),
-					"source.json": source,
-					"link": urls[0] if len(urls) > 0 else None,
+					"source": source,
+					"category": category,
+					"url": urls[0] if len(urls) > 0 else None,
 					"image_url": image,
-					"time": times[0] if len(times) > 0 else None
+					"publication_time": times[0] if len(times) > 0 else None,
+					"scrap_date": datetime.date.today()
 				})
 		
 		for child in soup.children:
 			if child.name is not None:
-				traverse(source, base_url, child, level + 1)
+				traverse(source, category, base_url, child, level + 1)
 
+
+# Controle the arguments
 
 articles = []
 category = sys.argv[1]
-sources = db.read("source")
-filters = db.read("filter")
+sources = json.load(open(os.path.join(PROJECT_PATH, "db", "source.json")))
+filters = json.load(open(os.path.join(PROJECT_PATH, "db", "filter.json")))
 
 if category in sources:
 	sources = sources[category]
@@ -68,29 +72,15 @@ else:
 	print("category not found in filters, review argument 1")
 	exit()
 
-current_path = str(pathlib.Path(__file__).parent.absolute())
-dir = os.path.join(PROJECT_PATH, "data", datetime.date.today().strftime('%Y-%m-%d'))
-
-if not os.path.exists(dir):
-	os.mkdir(dir)
-
 # Get the articles
 
-if not os.path.exists(os.path.join(dir, f"articles_{category}.json")):
-
-	for source in sources:
-		driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
-		driver.get(source["url"])
-		html = driver.page_source
-		soup = BeautifulSoup(html)
-		[x.extract() for x in soup.find_all('noscript')]
-		traverse(source["source"], source["url"], soup, 0)
-
-	with open(os.path.join(dir, f"articles_{category}.json"), 'w') as outfile:
-		json.dump(articles, outfile, indent=4)
-
-else:
-	articles = json.load(open(os.path.join(dir, f"articles_{category}.json"), "r"))
+for source in sources:
+	driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
+	driver.get(source["url"])
+	html = driver.page_source
+	soup = BeautifulSoup(html)
+	[x.extract() for x in soup.find_all('noscript')]
+	traverse(source["source"], category, source["url"], soup, 0)
 
 # Filter the articles
 
@@ -105,27 +95,24 @@ random.shuffle(articles)
 
 # Get the images
 
-if not os.path.exists(os.path.join(dir, 'img')):
-	os.mkdir(os.path.join(dir, 'img'))
-
 for i, article in enumerate(articles):
-	saved_image = os.path.join(dir, 'img', article['image_url'].split('?')[0].split('/')[-1])
-	if not os.path.exists(saved_image):
-		try:
-			request.urlretrieve(article["image_url"], saved_image)
-		except Exception as e:
-			print(e, "ON THIS URL :", article["image_url"])
-			saved_image = None
+	image = None
 
-	image_type = imghdr.what(saved_image) if saved_image is not None else None
+	try:
+		image, _ = request.urlretrieve(article["image_url"])
+	except Exception as e:
+		print(e, "ON THIS URL :", article["image_url"])
+
+	image_type = imghdr.what(image) if image is not None else None
 
 	if image_type is not None:
 		if image_type in ("jpg", "jpeg"):
-			im = Image.open(saved_image)
-			saved_image = (".".join(saved_image.split(".")[:-1]) if "." in saved_image[-5:] else saved_image) + ".png"
-			im.save(saved_image, "JPEG")
+			im = Image.open(image)
+			with BytesIO() as f:
+				im.save(f, format='JPEG')
+				image = f.getvalue()
 
-		article["image"] = saved_image
+		article["image"] = image
 	else:
 		article["image"] = None
 
@@ -133,5 +120,11 @@ articles = [a for a in articles if a["image"] is not None]
 
 # Save the data
 
-with open(os.path.join(dir, f"articles_{category}_filtered.json"), 'w') as outfile:
-	json.dump(articles, outfile, indent=4)
+if len(articles) > 0:
+	db = DB()
+
+	for article in articles:
+		try:
+			db.insert(article, db.tables["Article"])
+		except Exception as e:
+			print(e)
