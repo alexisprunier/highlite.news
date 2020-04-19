@@ -43,8 +43,12 @@ class Menu extends React.Component {
 						<li><a href="https://www.instagram.com/highlite.news/?hl=en" target="_blank">
 							<span><i class="fab fa-instagram"></i></span></a>
 						</li>
-						<li><a href="#"><span><i class="fas fa-home"></i></span></a></li>
-						<li><a href="#"><span><i class="fas fa-person-booth"></i></span></a></li>
+						<li><a href="#" onClick={() => this.props.changeMenu("HOME")}>
+							<span><i class="fas fa-home"></i></span></a>
+						</li>
+						<li><a href="#" onClick={() => this.props.changeMenu("VOTE")}>
+							<span><i class="fas fa-person-booth"></i></span></a>
+						</li>
 						<li><a href="https://www.snapchat.com/add/highlite.news" target="_blank">
 							<span><i class="fab fa-snapchat-ghost"></i></span></a>
 						</li>

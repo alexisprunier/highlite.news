@@ -1,7 +1,7 @@
 
 html, body {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     margin: 0;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -17,25 +17,65 @@ html, body {
 }
 
 #container {
+    position: relative;
     width: calc(100% - 8px);
     height: calc(100% - 8px);
-    top:4px;
-    left:4px;
-    right:4px;
-    bottom:4px;
     border:4px solid #F3F279;
-    
 }
 
 #content {
+    overflow-y: auto;
+    position: absolute;
+    top: 16;
+    left: 16;
     width: calc(100% - 30px);
-    height: calc(100% - 215px);
-    padding: 15px 15px 200px 15px;
+    height: calc(100% - 190px);
+    padding: 40px 15px 130px 15px;
+    z-index: 7;
+    -ms-overflow-style: none;
+}
+
+#content::-webkit-scrollbar {
+  display: none;
+}
+
+#background {
+    position: absolute;
+    top: 16;
+    left: 16;
+    width: 100%;
+    height: 100%;
     background: url(/img/bg.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     filter: brightness(30%);
-    z-index: 7;
+    z-index: 6;
+}
+
+.fullSize {
+    width: 100%;
+    height: 100%;
+}
+
+.title1 {
+    font-size: 35px;
+    color: #FFCC40;
+    font-family: 'Bungee';
+    line-height: 0.9;
+}
+
+.title2 {
+    font-size: 25px;
+    color: #97F2F3;
+    font-family: 'Bungee';
+    margin-top: 15px;
+}
+
+@font-face {
+  font-family: 'Bungee';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Bungee'), url('/font/Bungee-Regular.otf') format('truetype');
 }
