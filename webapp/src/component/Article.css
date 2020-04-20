@@ -1,0 +1,43 @@
+
+.Article {
+	position: relative;
+}
+
+.Article-image {
+    max-width: 40%;
+    max-height: 200px;
+    min-height: 100px;
+	vertical-align: middle;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.Article-image-img {
+	position: absolute;
+	max-width: 100%;
+    width: 100%;
+    height: auto;
+    top: 50%;     
+    left: 50%;
+    transform: translate(-50%, -50%);
+ }
+
+.Article-title {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	margin-top: 10px;
+	height: 56px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.Article-category {
+	margin-top: 5px;
+}
+
+.Article-links {
+	text-align: right;
+	font-size: 12px;
+}

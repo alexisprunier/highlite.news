@@ -28,8 +28,8 @@ html, body {
     position: absolute;
     top: 16;
     left: 16;
-    width: calc(100% - 30px);
-    height: calc(100% - 190px);
+    width: calc(100%);
+    height: calc(100%);
     padding: 40px 15px 130px 15px;
     z-index: 7;
     -ms-overflow-style: none;
@@ -67,10 +67,33 @@ html, body {
 }
 
 .title2 {
-    font-size: 25px;
+    font-size: 30px;
     color: #97F2F3;
     font-family: 'Bungee';
     margin-top: 15px;
+}
+
+.title3 {
+    font-size: 18px;
+    color: #97F2F3;
+    font-family: 'Bungee';
+    line-height: 1;
+}
+
+.title4 {
+    font-size: 14px;
+    color: #FFCC40;
+    font-family: 'Bungee';
+    line-height: 1;
+}
+
+a {
+    font-family: 'Bungee';
+    color: #F3F279;
+}
+
+a:hover {
+    color: #FFCC40;
 }
 
 @font-face {

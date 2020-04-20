@@ -1,7 +1,7 @@
 import React from "react";
 import "./PageVote.css";
 import {getRequest} from "../utils/request";
-import Video from "./Video";
+import Article from "./Article";
 
 
 class PageVote extends React.Component {
@@ -41,8 +41,10 @@ class PageVote extends React.Component {
                         <div className="title2">
                             {c}
                         </div>
-                        {this.state.articles.filter(v => v.category == c).map(v => { return (
-                            <div>{v.title}</div>
+                        {this.state.articles.filter(a => a.category == c).map(a => { return (
+                            <Article
+                                a={a}
+                            />
                         )})}
                     </div>
                 )})}
