@@ -101,6 +101,7 @@ for i, article in enumerate(articles):
 	try:
 		image, _ = request.urlretrieve(article["image_url"])
 	except Exception as e:
+		image = None
 		print(e, "ON THIS URL :", article["image_url"])
 
 	image_type = imghdr.what(image) if image is not None else None
@@ -111,8 +112,12 @@ for i, article in enumerate(articles):
 			with BytesIO() as f:
 				im.save(f, format='JPEG')
 				image = f.getvalue()
-
-		article["image"] = image
+			article["image"] = image
+		elif image_type == "png":
+			article["image"] = image
+		else:
+			print("Image type not accepted", image_type)
+			article["image"] = None
 	else:
 		article["image"] = None
 
@@ -124,7 +129,8 @@ if len(articles) > 0:
 	db = DB()
 
 	for article in articles:
-		try:
-			db.insert(article, db.tables["Article"])
-		except Exception as e:
-			print(e)
+
+		a = db.get(db.tables["Article"], {"title": article["title"]})
+
+		if len(a) == 0:
+			db.merge(article, db.tables["Article"])

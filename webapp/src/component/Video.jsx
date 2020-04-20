@@ -8,7 +8,6 @@ class Video extends React.Component {
         super(props);
 
         this.state = {
-            videos: []
         };
     }
 

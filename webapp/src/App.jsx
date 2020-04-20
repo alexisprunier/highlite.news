@@ -13,7 +13,7 @@ class App extends React.Component {
         this.changeMenu = this.changeMenu.bind(this);
 
         this.state = {
-            selectedMenu: "HOME"
+            selectedMenu: "VOTE"
         };
     }
 

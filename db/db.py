@@ -92,7 +92,7 @@ class DB(metaclass=Singleton):
             self.session.commit()
 
     ###############
-    # GLOBAL      #
+    # ARTICLE     #
     ###############
 
     def get_article_of_the_day(self, category):
