@@ -40,4 +40,23 @@
 .Article-links {
 	text-align: right;
 	font-size: 12px;
+	margin-top: 2px;
+}
+
+.Article-center-row {
+}
+
+.Article-vote {
+	margin-top: 20px;
+	margin-bottom: 15px;
+	height: 100%;
+	width: 100%;
+	font-size: 20px;
+	text-align: center;
+    font-family: 'Bungee';
+    color: #F3F279;
+}
+
+.Article-vote:hover {
+    color: #FFCC40;
 }

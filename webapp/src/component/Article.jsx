@@ -25,12 +25,12 @@ class Article extends React.Component {
                                     {this.props.a.title}
                                 </div>
                             </div>
-                            <div className="col-lg-6 col-md-6">
+                            <div className="col-lg-6 col-md-6 col-6">
                                 <div className="Article-category title4">
                                     {this.props.a.category}
                                 </div>
                             </div>
-                            <div className="col-lg-6 col-md-6">
+                            <div className="col-lg-6 col-md-6 col-6">
                                 <div className="Article-links">
                                     {this.props.a.url !== null ?
                                         <a href={this.props.a.url} target="_blank">Aller sur l'article</a>
@@ -42,7 +42,10 @@ class Article extends React.Component {
                         </div>
                     </div>
                     <div className="col-lg-2 col-md-12">
-                        Vote
+                        <div className="Article-vote">
+                            <i class="fas fa-vote-yea"></i>
+                            <div>152</div>
+                        </div>
                     </div>
                 </div>
             </div>
