@@ -1,6 +1,7 @@
 from flask_restful import Resource
 import traceback
 from utils.serializer import Serializer
+import datetime
 
 
 class GetArticles(Resource):
@@ -13,7 +14,8 @@ class GetArticles(Resource):
     def get(self):
         try:
 
-            articles = self.db.get(self.db.tables["Article"], {})
+            today = datetime.date.today()
+            articles = self.db.get(self.db.tables["Article"], {"scrap_date": today})
 
             for article in articles:
                 article.image = None

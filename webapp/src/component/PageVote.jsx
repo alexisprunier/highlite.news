@@ -34,7 +34,7 @@ class PageVote extends React.Component {
         return (
             <div id="PageHome">
                 <div className="title1">
-                    Votez pour les articles du jour
+                    Vote pour les articles du jour !
                 </div>
                 {this.getCategory().map(c => { return (
                     <div>
