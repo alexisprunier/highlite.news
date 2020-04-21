@@ -253,7 +253,8 @@ today = datetime.date.today().strftime("%d-%m-%Y")
 # Get the articles
 
 db = DB()
-articles = db.get_article_of_the_day(category)
+articles = db.get_articles_of_the_day(category)
+print(articles)
 
 ####################
 # CREATE DEFAULT FRAME
@@ -312,7 +313,9 @@ for i, article in enumerate(articles):
 	frame_article = cv2.circle(frame, conf["circle"]["pos"](i, len(articles)), conf["circle"]["size"], color_bgr_blue, -1)
 	default_frame = cv2.circle(default_frame, conf["circle"]["pos"](i, len(articles)), conf["circle"]["size"], color_bgr_blue, -1)
 
-	image_logo = cv2.imread(article["image"], -1)
+	print(article.image)
+	image_logo = cv2.imdecode(article.image, cv2.IMREAD_COLOR)
+	print("ok")
 	
 	if image_logo is not None:
 		
@@ -321,7 +324,7 @@ for i, article in enumerate(articles):
 
 			# Add the content
 
-			frame_a = overlay_text(frame_a, article["title"], conf["article"]["title_pos"], conf["article"]["font_size"], color_bgr_blue, max_width=conf["article"]["title_max_width"], f=y)
+			frame_a = overlay_text(frame_a, article.title, conf["article"]["title_pos"], conf["article"]["font_size"], color_bgr_blue, max_width=conf["article"]["title_max_width"], f=y)
 			image_logo = resize_image(image_logo, conf["article"]["image_height"] / image_logo.shape[0])
 			frame_a = overlay_image(frame_a, image_logo, conf["article"]["image_pos"], f=y)
 			
