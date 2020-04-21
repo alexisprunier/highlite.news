@@ -12,6 +12,7 @@ from db.db import DB
 import json
 from utils.config import PROJECT_PATH
 from io import BytesIO
+import io
 
 
 def traverse(source, category, base_url, soup, level):
@@ -39,7 +40,7 @@ def traverse(source, category, base_url, soup, level):
 						image = None
 					
 				articles.append({
-					"title": paragraphs[0].strip(),
+					"title": paragraphs[0].replace("\n", "").strip(),
 					"source": source,
 					"category": category,
 					"url": urls[0] if len(urls) > 0 else None,
@@ -97,18 +98,23 @@ random.shuffle(articles)
 
 for i, article in enumerate(articles):
 	image = None
+	print("0", article["title"])
 
 	try:
-		image, _ = request.urlretrieve(article["image_url"])
+		#image, _ = request.urlretrieve(article["image_url"])
+		with request.urlopen(article["image_url"]) as response:
+			image = response.read()
+		print("A", image)
 	except Exception as e:
 		image = None
 		print(e, "ON THIS URL :", article["image_url"])
 
-	image_type = imghdr.what(image) if image is not None else None
+	image_type = imghdr.what(None, image) if image is not None else None
+	print("B", image_type)
 
 	if image_type is not None:
 		if image_type in ("jpg", "jpeg"):
-			im = Image.open(image)
+			im = Image.open(io.BytesIO(image))
 			with BytesIO() as f:
 				im.save(f, format='JPEG')
 				image = f.getvalue()
@@ -120,6 +126,8 @@ for i, article in enumerate(articles):
 			article["image"] = None
 	else:
 		article["image"] = None
+
+	print("C", article["image"])
 
 articles = [a for a in articles if a["image"] is not None]
 

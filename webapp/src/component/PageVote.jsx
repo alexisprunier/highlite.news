@@ -2,6 +2,7 @@ import React from "react";
 import "./PageVote.css";
 import {getRequest} from "../utils/request";
 import Article from "./Article";
+import Loading from "./Loading";
 
 
 class PageVote extends React.Component {
@@ -12,7 +13,7 @@ class PageVote extends React.Component {
         this.getCategory = this.getCategory.bind(this);
 
         this.state = {
-            articles: []
+            articles: null
         };
     }
 
@@ -32,22 +33,33 @@ class PageVote extends React.Component {
 
     render() {
         return (
-            <div id="PageHome">
+            <div id="PageVote">
                 <div className="title1">
                     Vote pour les articles du jour !
                 </div>
-                {this.getCategory().map(c => { return (
-                    <div>
-                        <div className="title2">
-                            {c}
-                        </div>
-                        {this.state.articles.filter(a => a.category == c).map(a => { return (
-                            <Article
-                                a={a}
-                            />
-                        )})}
+                {this.state.articles === null ? 
+                    <div className="PageVote-loading-box">
+                        <Loading/>
                     </div>
-                )})}
+                :
+                    this.state.articles.length === 0 ? 
+                        <div className="PageVote-loading-box">
+                            <div className="PageVote-no-article title3">Pas d'article disponible pour le vote</div>
+                        </div>
+                    :
+                        this.getCategory().map(c => { return (
+                            <div>
+                                <div className="title2">
+                                    {c}
+                                </div>
+                                {this.state.articles.filter(a => a.category == c).map(a => { return (
+                                    <Article
+                                        a={a}
+                                    />
+                                )})}
+                            </div>
+                        )})  
+                }
             </div>
         );
     }

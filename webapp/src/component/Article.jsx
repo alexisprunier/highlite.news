@@ -1,5 +1,6 @@
 import React from "react";
 import "./Article.css";
+import {postRequest} from "../utils/request";
 
 
 class Article extends React.Component {
@@ -7,8 +8,20 @@ class Article extends React.Component {
     constructor(props) {
         super(props);
 
+        this.vote = this.vote.bind(this);
+
         this.state = {
         };
+    }
+
+    vote() {
+        let params = {"article_id": this.props.a.id}
+
+        postRequest.call(this, "r/vote", params, () => {
+            console.Log("OK");
+        }, response => {
+        }, error => {
+        });
     }
 
     render() {
@@ -42,9 +55,9 @@ class Article extends React.Component {
                         </div>
                     </div>
                     <div className="col-lg-2 col-md-12">
-                        <div className="Article-vote">
+                        <div className="Article-vote" onClick={this.vote}>
                             <i class="fas fa-vote-yea"></i>
-                            <div>152</div>
+                            <div>{this.props.a.nb_vote}</div>
                         </div>
                     </div>
                 </div>
