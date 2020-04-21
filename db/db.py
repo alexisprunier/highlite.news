@@ -5,6 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from webserv.pattern.singleton import Singleton
 from utils.config import DB_URI
 import datetime
+from sqlalchemy.orm import defer
+from sqlalchemy import func
 
 
 class DB(metaclass=Singleton):
@@ -95,8 +97,30 @@ class DB(metaclass=Singleton):
     # ARTICLE     #
     ###############
 
-    def get_article_of_the_day(self, category):
-        rows = self.session.query(self.instance.tables["Article"]) \
-            .filter(self.instance.tables["Article"].category == category) \
-            .filter(self.instance.tables["Article"].scrap_date == datetime.date.now()).all()
+    def get_articles_in_wait(self):
+        sub_query = self.session.query(self.tables["Video"].category) \
+            .filter(self.tables["Video"].creation_date == datetime.date.today()) \
+            .distinct().subquery()
+
+        rows = self.session.query(self.tables["Article"], func.count(self.tables["ArticleVote"].id)) \
+            .options(defer("image")) \
+            .filter(self.tables["Article"].category.notin_(sub_query)) \
+            .filter(self.tables["Article"].scrap_date == datetime.date.today()) \
+            .outerjoin(self.tables["ArticleVote"]).group_by(self.tables["Article"]).all()
+        return rows
+
+    def get_articles_of_the_day(self, category):
+        rows = self.session.query(self.tables["Article"]) \
+            .filter(self.tables["Article"].category == category) \
+            .filter(self.tables["Article"].scrap_date == datetime.date.today()).all()
+        return rows
+
+    def get_articles_of_video(self, video_id):
+        sub_query = self.session.query(self.tables["VideoArticle"].article_id) \
+            .filter(self.tables["VideoArticle"].video_id == video_id).subquery()
+
+        rows = self.session.query(self.tables["Article"]) \
+            .options(defer("image")) \
+            .filter(self.tables["Article"].id.in_(sub_query)).all()
+
         return rows

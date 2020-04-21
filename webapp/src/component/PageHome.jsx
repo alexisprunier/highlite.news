@@ -2,6 +2,7 @@ import React from "react";
 import "./PageHome.css";
 import {getRequest} from "../utils/request";
 import Video from "./Video";
+import Loading from "./Loading";
 
 
 class PageHome extends React.Component {
@@ -12,7 +13,8 @@ class PageHome extends React.Component {
         this.getDates = this.getDates.bind(this);
 
         this.state = {
-            videos: []
+            videos: null,
+            selectedVideo: null
         };
     }
 
@@ -27,7 +29,7 @@ class PageHome extends React.Component {
     }
 
     getDates() {
-        return [...new Set(this.state.videos.map(v => { return v.date }))];
+        return [...new Set(this.state.videos.map(v => { return v.creation_date }))];
     }
 
     render() {
@@ -36,18 +38,29 @@ class PageHome extends React.Component {
                 <div className="title1">
                     Dernières vidéos publiées
                 </div>
-                {this.getDates().map(d => { return (
-                    <div>
-                        <div className="title2">
-                            {d}
-                        </div>
-                        {this.state.videos.filter(v => v.date == d).map(v => { return (
-                            <Video
-                                v={v}
-                            />
-                        )})}
+                {this.state.videos === null ? 
+                    <div className="PageHome-loading-box">
+                        <Loading/>
                     </div>
-                )})}
+                :
+                    this.state.videos.length === 0 ? 
+                        <div className="PageHome-loading-box">
+                            <div className="PageHome-no-article title3">Pas de vidéo disponible</div>
+                        </div>
+                    :
+                        this.getDates().map(d => { return (
+                            <div>
+                                <div className="title2">
+                                    {d}
+                                </div>
+                                {this.state.videos.filter(v => v.creation_date == d).map(v => { return (
+                                    <Video
+                                        v={v}
+                                    />
+                                )})}
+                            </div>
+                        )})
+                }
             </div>
         );
     }

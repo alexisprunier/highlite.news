@@ -1,9 +1,10 @@
 from flask_restful import Resource
 import traceback
 from utils.serializer import Serializer
+from flask import request
 
 
-class GetArticles(Resource):
+class GetArticlesOfVideo(Resource):
 
     db = None
 
@@ -13,21 +14,17 @@ class GetArticles(Resource):
     def get(self):
         try:
 
-            query = self.db.get_articles_in_wait()
+            if request.args.get('video_id') is None:
+                return "", "500 'video_id' parameter is missing"
 
-            articles = []
+            articles = self.db.get_articles_of_video(request.args.get('video_id'))
 
-            for q in query:
-                q[0].image = None
-                articles.append(q[0])
+            for article in articles:
+                article.image = None
 
             articles = Serializer.serialize(articles, self.db.tables["Article"])
 
-            for index, article in enumerate(articles):
-                article["nb_vote"] = query[index][1]
-
         except Exception as e:
-            traceback.print_exc()
             return "", "500 " + str(e)
 
         return articles, "200"
