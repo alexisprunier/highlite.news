@@ -64,13 +64,14 @@ html, body {
     color: #FFCC40;
     font-family: 'Bungee';
     line-height: 0.9;
+    margin: 0px 0px 10px 0px;
 }
 
 .title2 {
     font-size: 30px;
     color: #97F2F3;
     font-family: 'Bungee';
-    margin-top: 15px;
+    margin: 20px 0px;
 }
 
 .title3 {

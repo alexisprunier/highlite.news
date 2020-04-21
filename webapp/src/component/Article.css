@@ -5,6 +5,7 @@
     animation-name: fadeIn;
     -webkit-animation-duration: 1.5s;
     animation-duration: 1.5s;
+    margin: 5px 0px;
 }
 
 .Article-image {
