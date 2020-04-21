@@ -112,7 +112,10 @@ class DB(metaclass=Singleton):
     def get_articles_of_the_day(self, category):
         rows = self.session.query(self.tables["Article"]) \
             .filter(self.tables["Article"].category == category) \
-            .filter(self.tables["Article"].scrap_date == datetime.date.today()).all()
+            .filter(self.tables["Article"].scrap_date == datetime.date.today()) \
+            .outerjoin(self.tables["ArticleVote"]).group_by(self.tables["Article"]) \
+            .order_by(func.count(self.tables["ArticleVote"].id))\
+            .limit(10).all()
         return rows
 
     def get_articles_of_video(self, video_id):

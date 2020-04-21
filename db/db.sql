@@ -47,3 +47,6 @@ CREATE TABLE ArticleVote (
 
 ALTER TABLE ArticleVote
   ADD CONSTRAINT UNIQUE_VOTE UNIQUE(article_id, ip);
+
+ALTER TABLE Article
+  MODIFY image LONGBLOB NOT NULL;
