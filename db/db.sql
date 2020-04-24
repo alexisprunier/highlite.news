@@ -5,7 +5,9 @@ USE Highlite;
 
 CREATE TABLE Video (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	title VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+	file_name VARCHAR(255) NOT NULL,
+	format VARCHAR(255) NOT NULL,
     youtube_id VARCHAR(20),
     category VARCHAR(20) NOT NULL,
     creation_date DATE NOT NULL

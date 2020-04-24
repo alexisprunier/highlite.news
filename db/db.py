@@ -89,9 +89,8 @@ class DB(metaclass=Singleton):
         return self.session.query(table).count()
 
     def truncate(self, table):
-        if ".Smowg" in str(table):
-            self.session.query(table).delete()
-            self.session.commit()
+        self.session.query(table).delete()
+        self.session.commit()
 
     ###############
     # ARTICLE     #
@@ -110,13 +109,19 @@ class DB(metaclass=Singleton):
         return rows
 
     def get_articles_of_the_day(self, category):
-        rows = self.session.query(self.tables["Article"]) \
+        rows = self.session.query(self.tables["Article"], func.count(self.tables["ArticleVote"].id)) \
             .filter(self.tables["Article"].category == category) \
             .filter(self.tables["Article"].scrap_date == datetime.date.today()) \
-            .outerjoin(self.tables["ArticleVote"]).group_by(self.tables["Article"]) \
-            .order_by(func.count(self.tables["ArticleVote"].id))\
-            .limit(10).all()
-        return rows
+            .outerjoin(self.tables["ArticleVote"]).group_by(self.tables["Article"]).all()
+
+        rows.sort(key=lambda o: o[1], reverse=True)
+
+        articles = []
+
+        for i in range(0, min(10, len(rows))):
+            articles.append(rows[i][0])
+
+        return articles
 
     def get_articles_of_video(self, video_id):
         sub_query = self.session.query(self.tables["VideoArticle"].article_id) \

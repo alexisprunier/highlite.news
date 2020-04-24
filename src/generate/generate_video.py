@@ -12,6 +12,7 @@ import sys
 import subprocess
 from utils.config import PROJECT_PATH
 from db.db import DB
+import numpy as np
 
 
 conf = {
@@ -254,7 +255,6 @@ today = datetime.date.today().strftime("%d-%m-%Y")
 
 db = DB()
 articles = db.get_articles_of_the_day(category)
-print(articles)
 
 ####################
 # CREATE DEFAULT FRAME
@@ -313,10 +313,8 @@ for i, article in enumerate(articles):
 	frame_article = cv2.circle(frame, conf["circle"]["pos"](i, len(articles)), conf["circle"]["size"], color_bgr_blue, -1)
 	default_frame = cv2.circle(default_frame, conf["circle"]["pos"](i, len(articles)), conf["circle"]["size"], color_bgr_blue, -1)
 
-	print(article.image)
-	image_logo = cv2.imdecode(article.image, cv2.IMREAD_COLOR)
-	print("ok")
-	
+	image_logo = cv2.imdecode(np.frombuffer(article.image, np.uint8), cv2.IMREAD_COLOR)
+
 	if image_logo is not None:
 		
 		for y, _ in enumerate(range(5 * 24)):
@@ -408,7 +406,7 @@ os.remove(tmp_mp4_video_abs_path)
 # SNAPCHAT SPLIT WITH THE TIKTOK FORMAT
 ####################
 
-if format == "tiktok":
+"""if format == "tiktok":
 	split = [4] + [5 for _ in articles] + [6]
 	start_time = 0
 
@@ -416,3 +414,17 @@ if format == "tiktok":
 		output_name = f"{'.'.join(mp4_video_abs_path.split('.')[:-1])}_{i+1}.mp4".replace("tiktok", "snapchat")
 		subprocess.call(['ffmpeg', '-i', mp4_video_abs_path, '-y', '-nostdin', '-ss', str(start_time), '-t', str(s), output_name])
 		start_time += s
+"""
+
+####################
+# CREATE A VIDEO RECORD ON DB
+####################
+
+db.merge({
+	"title": f"Hɪɢʜʟɪᴛᴇ™ du {today} sur le {category}",
+	"file_name": mp4_video_abs_path,
+	"format": format,
+	"category": category,
+	"creation_date": datetime.date.today()
+}, db.tables["Video"])
+
