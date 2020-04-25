@@ -13,7 +13,7 @@ class GetVideos(Resource):
     def get(self):
         try:
 
-            videos = self.db.get(self.db.tables["Video"])
+            videos = self.db.get(self.db.tables["Video"], {"format": "youtube"})
             videos = Serializer.serialize(videos, self.db.tables["Video"])
 
         except Exception as e:
