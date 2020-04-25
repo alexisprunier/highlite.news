@@ -7,6 +7,7 @@ import datetime
 import json
 from utils.config import PROJECT_PATH
 import sys
+from db.db import DB
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -65,7 +66,7 @@ def initialize_upload(youtube, options):
         media_body=MediaFileUpload(options["file"], chunksize=-1, resumable=True)
     )
 
-    resumable_upload(insert_request)
+    return resumable_upload(insert_request)
 
 
 def resumable_upload(request):
@@ -78,10 +79,7 @@ def resumable_upload(request):
             status, response = request.next_chunk()
             if response is not None:
                 if 'id' in response:
-                    f = open(youtube_video_id_path, "w")
-                    f.write(response['id'])
-                    f.close()
-                    print('Video id "%s" was successfully uploaded.' % response['id'])
+                    return response['id']
                 else:
                     exit('The upload failed with an unexpected response: %s' % response)
         except HttpError as e:
@@ -107,11 +105,20 @@ def resumable_upload(request):
 
 if __name__ == '__main__':
 
-    articles = json.load(open(article_path, "r"))
+    db = DB()
+
+    video = db.get(db.tables["Video"], {"format": "youtube", "category": category, "creation_date": datetime.date.today()})
+
+    if len(video) == 0:
+        sys.exit(0)
+    else:
+        video = video[0]
+
+    articles = db.get_articles_of_video(video.id)
 
     articles_body = ""
     for i, a in enumerate(articles):
-        articles_body += "Article " + str(i+1) + ": " + str(a["link"]) + "\n"
+        articles_body += "Article " + str(i+1) + ": " + str(a.url) + "\n"
 
     args = {
         "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_{category}_youtube_{today}.mp4"),
@@ -137,6 +144,11 @@ if __name__ == '__main__':
     youtube = get_authenticated_service()
 
     try:
-        initialize_upload(youtube, args)
+        youtube_id = initialize_upload(youtube, args)
+        if youtube_id is not None:
+            video.youtube_id = youtube_id
+            db.merge(video, db.tables["Video"])
+        else:
+            print("Error while uploading the video")
     except HttpError as e:
         print('An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))

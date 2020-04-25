@@ -420,11 +420,14 @@ os.remove(tmp_mp4_video_abs_path)
 # CREATE A VIDEO RECORD ON DB
 ####################
 
-db.merge({
-	"title": f"Hɪɢʜʟɪᴛᴇ™ du {today} sur le {category}",
+video = db.merge({
+	"title": f"Highlite du {today} sur le {category}",
 	"file_name": mp4_video_abs_path,
 	"format": format,
 	"category": category,
 	"creation_date": datetime.date.today()
 }, db.tables["Video"])
 
+db.merge([
+	{"video_id": video.id, "article_id": a.id, "pos": i+1} for i, a in enumerate(articles)
+], db.tables["VideoArticle"])

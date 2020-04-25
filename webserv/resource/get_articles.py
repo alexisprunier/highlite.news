@@ -18,6 +18,7 @@ class GetArticles(Resource):
             articles = []
 
             for q in query:
+                self.db.session.expunge(q[0])
                 q[0].image = None
                 articles.append(q[0])
 
