@@ -7,7 +7,7 @@ scrap_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "scrap_a
 #os.system(f"{scrap_script} COVID-19")
 #os.system(f"{scrap_script} FOOTBALL")
 
-generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "generate_video.py")
+generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
 
 #os.system(f"{generate_script} COVID-19 youtube")
 #os.system(f"{generate_script} COVID-19 instagram")
@@ -20,8 +20,8 @@ generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "gene
 upload_youtube_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_youtube.py")
 upload_twitter_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_twitter.py")
 
-os.system(f"{upload_youtube_script} COVID-19")
-os.system(f"{upload_twitter_script} COVID-19")
+#os.system(f"{upload_youtube_script} COVID-19")
+#os.system(f"{upload_twitter_script} COVID-19")
 
 os.system(f"{upload_youtube_script} FOOTBALL")
 os.system(f"{upload_twitter_script} FOOTBALL")

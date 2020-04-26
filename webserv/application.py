@@ -6,7 +6,7 @@ from webserv.resource.get_videos import GetVideos
 from webserv.resource.get_articles import GetArticles
 from webserv.resource.get_articles_of_video import GetArticlesOfVideo
 from webserv.resource.vote import Vote
-from utils.config import DB_URI
+from utils.config import DB_URI, ENVIRONMENT
 from threading import Thread
 from db.db import DB
 from sqlalchemy.engine.url import URL
@@ -38,8 +38,9 @@ def undefined_route():
 
 
 if __name__ == '__main__':
-    cron = Thread(target=cron.run)
-    cron.start()
+    if ENVIRONMENT == "production":
+        cron = Thread(target=cron.run)
+        cron.start()
 
     application.run(debug=True, threaded=True)
 

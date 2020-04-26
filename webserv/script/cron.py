@@ -11,7 +11,7 @@ def run():
         os.system(f"{scrap_script} {category}")
 
     def generate(category):
-        generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "generate_video.py")
+        generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
         os.system(f"{generate_script} {category}")
 
     def upload(category):

@@ -2,7 +2,7 @@ import pathlib
 import os
 
 PROJECT_PATH = pathlib.Path(__file__).parent.parent
-MODE = os.getenv('ENV') or "dev"
+ENVIRONMENT = os.getenv('ENV') or "dev"
 
 DB_URI = {
     'drivername': 'mysql+pymysql',
