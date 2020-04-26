@@ -7,8 +7,10 @@ from webserv.resource.get_articles import GetArticles
 from webserv.resource.get_articles_of_video import GetArticlesOfVideo
 from webserv.resource.vote import Vote
 from utils.config import DB_URI
+from threading import Thread
 from db.db import DB
 from sqlalchemy.engine.url import URL
+from webserv.script import cron
 
 
 db_uri = URL(**DB_URI)
@@ -36,4 +38,8 @@ def undefined_route():
 
 
 if __name__ == '__main__':
+    cron = Thread(target=cron.run)
+    cron.start()
+
     application.run(debug=True, threaded=True)
+
