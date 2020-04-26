@@ -24,4 +24,4 @@ upload_twitter_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload"
 #os.system(f"{upload_twitter_script} COVID-19")
 
 os.system(f"{upload_youtube_script} FOOTBALL")
-os.system(f"{upload_twitter_script} FOOTBALL")
+#os.system(f"{upload_twitter_script} FOOTBALL")
