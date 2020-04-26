@@ -8,11 +8,12 @@ import json
 from utils.config import PROJECT_PATH
 import sys
 from db.db import DB
-
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
-from google_auth_oauthlib.flow import InstalledAppFlow
+import google.auth.transport.requests as google_request
+import google
+
 
 httplib2.RETRIES = 1
 MAX_RETRIES = 10
@@ -22,6 +23,7 @@ RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, http.client.NotConnecte
                         http.client.ResponseNotReady, http.client.BadStatusLine)
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 CLIENT_SECRETS_FILE = os.path.join(PROJECT_PATH, "credentials", "client_secret.json")
+CREDENTIALS = os.path.join(PROJECT_PATH, "credentials", "google_credentials.json")
 
 SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
 API_SERVICE_NAME = 'youtube'
@@ -36,11 +38,12 @@ article_path = os.path.join(PROJECT_PATH, "data", today, f"articles_{category}_f
 youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, f"youtube_video_id_{category}.txt")
 
 
-# Authorize the request and store authorization credentials.
 def get_authenticated_service():
-    flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-    credentials = flow.run_console()
-    return build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
+    file_content = open(CREDENTIALS, "r")
+    credentials_dict = json.loads(file_content.read())
+    cr = google.oauth2.credentials.Credentials(**credentials_dict)
+    cr.refresh(google_request.Request())
+    return build(API_SERVICE_NAME, API_VERSION, credentials=cr)
 
 
 def initialize_upload(youtube, options):
