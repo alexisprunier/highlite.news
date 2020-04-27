@@ -40,7 +40,7 @@ class Video extends React.Component {
                 <div className="row">
                     <div className="col-md-4 col-xs-12 Video-video">
                         <iframe 
-                            src={this.props.v.youtube_url}
+                            src={"https://www.youtube.com/embed/" + this.props.v.youtube_id}
                             frameborder="0" 
                             allow="autoplay; encrypted-media" 
                             allowfullscreen>
