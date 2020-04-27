@@ -33,4 +33,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-api.update_status(status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\nhttps://youtube.com/watch?v={video.youtube_id}")
+api.update_status(
+    status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
+           f"#Highlite #News #Actu #Today #{category}\n\n"
+           f"https://youtube.com/watch?v={video.youtube_id}")
