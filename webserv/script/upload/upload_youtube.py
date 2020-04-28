@@ -12,7 +12,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 import google.auth.transport.requests as google_request
-import google
+import google.oauth2.credentials
 
 
 httplib2.RETRIES = 1
