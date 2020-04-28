@@ -1,7 +1,5 @@
 import tweepy
 import datetime
-import os
-from utils.config import PROJECT_PATH
 import sys
 from db.db import DB
 
