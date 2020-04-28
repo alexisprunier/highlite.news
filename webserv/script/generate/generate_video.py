@@ -290,6 +290,8 @@ w, h = draw.textsize(category, font=font)
 txt = f"Les {len(articles)} articles du jour sur"
 
 for n in range(4 * 24):
+	if n == 0:
+		n = 400
 	image_intro = overlay_text(default_frame, txt, conf["title2"]["pos"], conf["title2"]["size"], color_bgr_dark_yellow, f=n)
 	image_intro = overlay_text(image_intro, category, conf["title1"]["pos"], conf["title1"]["size"], color_bgr_dark_yellow, f=n)
 	image_intro = overlay_text(image_intro, today, conf["intro_date"]["pos"], conf["intro_date"]["size"], color_bgr_blue, pos_type="right", f=n)
