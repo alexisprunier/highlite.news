@@ -1,5 +1,4 @@
 from flask_restful import Api
-from flask import render_template
 from flask_cors import CORS
 from flask import Flask, send_from_directory
 from webserv.resource.get_videos import GetVideos
@@ -43,14 +42,6 @@ def serve(path):
 
 
 if __name__ == '__main__':
-
-    int = 0
-
-    for i in range(0, 240):
-        int += 10
-        int = int * 1.005
-
-    print(int)
 
     if ENVIRONMENT == "production":
         cron = Thread(target=cron.run)
