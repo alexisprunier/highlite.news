@@ -38,11 +38,11 @@ if len(upload) > 0:
 graph = facebook.GraphAPI(access_token=secret_key, version="3.0")
 
 graph.put_object(
-  parent_object=page_id,
-  connection_name="feed",
-  message=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
-          f"#Highlite #News #Actu #Today #{category.replace('-', '')}\n\n"
-          f"https://youtube.com/watch?v={video.youtube_id}"
+    parent_object=page_id,
+    connection_name="feed",
+    message=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
+            f"#Highlite #News #Actu #Today #{category.replace('-', '')}\n\n"
+            f"https://youtube.com/watch?v={video.youtube_id}"
 )
 
 #############

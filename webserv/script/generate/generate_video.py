@@ -210,7 +210,7 @@ if sys.argv[2] in conf:
 	conf = conf[sys.argv[2]]
 	format = sys.argv[2]
 else:
-	sys.exit()
+	raise Exception(f"The second argument is not amongst {', '.join(conf.keys())}")
 
 category = sys.argv[1]
 
@@ -254,6 +254,10 @@ today = datetime.date.today().strftime("%d-%m-%Y")
 # Get the articles
 
 db = DB()
+pipeline = db.get(db.tables["Pipeline"], {"category": category})
+pipeline = pipeline[0] if len(pipeline) > 0 else None
+if pipeline is None:
+	raise Exception("Pipeline not found for this category")
 articles = db.get_articles_of_the_day(category)
 
 ####################
@@ -356,7 +360,7 @@ pos_el4 = int(video_width / 2 + 600)
 for y, _ in enumerate(range(6 * 24)):
 	txt = "Liens sur: www.highlite.news"
 	frame = overlay_text(default_frame, txt, conf["date"]["pos"], conf["date"]["size"], color_bgr_blue, pos_type="right", f=max(0, y))
-	txt = f"Nouvelle vidéo {category} tous les jours à 19h"
+	txt = f"Nouvelle vidéo {category} tous les jours à {pipeline.publication_time[:2]}h"
 	frame = overlay_text(frame, txt, conf["ad"]["pos"], conf["ad"]["size"], color_bgr_dark_yellow, pos_type="right", max_width=conf["ad"]["max_width"])
 
 	frame = overlay_image(frame, image_twitter, conf["social"]["pos1"], pos_type="middle", f=max(0, y))
