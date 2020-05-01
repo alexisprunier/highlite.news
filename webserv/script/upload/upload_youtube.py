@@ -38,6 +38,8 @@ article_path = os.path.join(PROJECT_PATH, "data", today, f"articles_{category}_f
 youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, f"youtube_video_id_{category}.txt")
 
 
+
+
 def get_authenticated_service():
     file_content = open(CREDENTIALS, "r")
     credentials_dict = json.loads(file_content.read())
@@ -111,17 +113,23 @@ if __name__ == '__main__':
     db = DB()
 
     video = db.get(db.tables["Video"], {"format": "youtube", "category": category, "creation_date": datetime.date.today()})
+    video = video[0] if len(video) > 0 else None
 
-    if len(video) == 0:
-        sys.exit(0)
-    else:
-        video = video[0]
+    if video is None:
+        raise Exception("Video not found in table")
+    if video.youtube_id is not None:
+        raise Exception("This video already has a Youtube ID")
+
+    upload = db.get(db.tables["Upload"], {"video_id": video.id})
+
+    if len(upload) > 0:
+        raise Exception("This video already in the upload table")
 
     articles = db.get_articles_of_video(video.id)
 
     articles_body = ""
     for i, a in enumerate(articles):
-        articles_body += "Article " + str(i+1) + ": " + str(a.url) + "\n"
+        articles_body += "Article " + str(i+1) + ": " + (str(a.url) if a.url is not None else "Oops, nous avons perdu le lien") + "\n"
 
     args = {
         "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_{category}_youtube_{today}.mp4"),
@@ -136,6 +144,7 @@ if __name__ == '__main__':
             "Suivez-nous sur les différents réseaux:\n"
             "\n"
             "Twitter: @highlitenews\n"
+            "Facebook: @highlite.news\n"
             "Instagram: @highlite.news\n"
             "Snapchat: @highlite.news\n"
             "TikTok: @highlite.news\n",
@@ -151,6 +160,15 @@ if __name__ == '__main__':
         if youtube_id is not None:
             video.youtube_id = youtube_id
             db.merge(video, db.tables["Video"])
+
+            upload = {
+                "video_id": video.id,
+                "platform": "youtube",
+                "publication_date": datetime.date.now(),
+            }
+
+            db.merge(upload, db.tables["Upload"])
+
         else:
             print("Error while uploading the video")
     except HttpError as e:

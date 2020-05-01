@@ -9,8 +9,6 @@ import imghdr
 import sys
 import datetime
 from db.db import DB
-import json
-from utils.config import PROJECT_PATH
 from io import BytesIO
 import io
 
@@ -56,52 +54,36 @@ def traverse(source, category, base_url, soup, level):
 
 # Controle the arguments
 
+db = DB()
 articles = []
 category = sys.argv[1]
-sources = json.load(open(os.path.join(PROJECT_PATH, "db", "source.json")))
-filters = json.load(open(os.path.join(PROJECT_PATH, "db", "filter.json")))
-
-if category in sources:
-	sources = sources[category]
-else:
-	print("category not found in sources, review argument 1")
-	exit()
-
-if category in filters:
-	filters = filters[category]
-else:
-	print("category not found in filters, review argument 1")
-	exit()
+pipeline = db.get(db.tables["Pipeline"], {"category": category})[0]
+sources = db.get(db.tables["Source"], {"category": category})
+filters = None if pipeline.filter is None else pipeline.filter.split(",")
 
 # Get the articles
 
 for source in sources:
 	driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
-	driver.get(source["url"])
+	driver.get(source.url)
 	html = driver.page_source
 	soup = BeautifulSoup(html)
 	[x.extract() for x in soup.find_all('noscript')]
-	traverse(source["source"], category, source["url"], soup, 0)
+	traverse(source.publisher, category, source.url, soup, 0)
 
 # Filter the articles
 
 articles = [a for a in articles if a["image_url"] is not None]
-
-if "contain" in filters:
-	articles = [a for a in articles if len([_ for _ in filters["contain"] if _ in a["title"].lower()]) > 0]
-
+articles = [a for a in articles if filters is None or len([_ for _ in filters if _ in a["title"].lower()]) > 0]
 articles = [a for i, a in enumerate(articles) if i == [y for y, b in enumerate(articles) if a["title"] == b["title"]][0]]
-
 random.shuffle(articles)
 
 # Get the images
 
 for i, article in enumerate(articles):
 	image = None
-	print("0", article["title"])
 
 	try:
-		#image, _ = request.urlretrieve(article["image_url"])
 		with request.urlopen(article["image_url"]) as response:
 			image = response.read()
 		print("A", image)
@@ -110,7 +92,6 @@ for i, article in enumerate(articles):
 		print(e, "ON THIS URL :", article["image_url"])
 
 	image_type = imghdr.what(None, image) if image is not None else None
-	print("B", image_type)
 
 	if image_type is not None:
 		if image_type in ("jpg", "jpeg"):
@@ -127,17 +108,12 @@ for i, article in enumerate(articles):
 	else:
 		article["image"] = None
 
-	print("C", article["image"])
-
 articles = [a for a in articles if a["image"] is not None]
 
 # Save the data
 
 if len(articles) > 0:
-	db = DB()
-
 	for article in articles:
-
 		a = db.get(db.tables["Article"], {"title": article["title"]})
 
 		if len(a) == 0:
