@@ -20,4 +20,5 @@ instapy_cli==0.0.12
 mhmovie==2.3
 moviepy==0.2.3.2
 pymysql==0.9.3
+facebook-sdk==3.1.0
 selenium==3.141.0

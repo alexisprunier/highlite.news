@@ -102,7 +102,7 @@ CREATE TABLE Upload (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     video_id INT NOT NULL,
     platform VARCHAR(20) NOT NULL,
-    publication_date DATE NOT NULL,
+    publication_datetime DATETIME NOT NULL,
     CONSTRAINT FK_VIDEO_UPLOAD_1 FOREIGN KEY (video_id)
         REFERENCES `Video`(id)
         ON DELETE CASCADE ON UPDATE CASCADE

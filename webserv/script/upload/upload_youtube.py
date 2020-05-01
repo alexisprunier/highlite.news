@@ -164,7 +164,7 @@ if __name__ == '__main__':
             upload = {
                 "video_id": video.id,
                 "platform": "youtube",
-                "publication_date": datetime.date.now(),
+                "publication_datetime": datetime.datetime.now(),
             }
 
             db.merge(upload, db.tables["Upload"])
