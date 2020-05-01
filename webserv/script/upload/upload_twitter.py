@@ -15,16 +15,19 @@ today_fr = datetime.date.today().strftime('%d-%m-%Y')
 db = DB()
 
 video = db.get(db.tables["Video"], {"format": "youtube", "category": category, "creation_date": datetime.date.today()})
+video = video[0] if len(video) > 0 else None
 
 if len(video) == 0:
-    print("No video found")
-    sys.exit(0)
-else:
-    video = video[0]
+    raise Exception("Video not found in DB")
 
 if video.youtube_id is None:
     print("Video has no youtube ID")
     sys.exit(0)
+
+upload = db.get(db.tables["Upload"], {"video_id": video.id})
+
+if len(upload) > 0:
+    raise Exception("This video already in the upload table")
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
@@ -35,3 +38,11 @@ api.update_status(
     status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
            f"#Highlite #News #Actu #Today #{category.replace('-', '')}\n\n"
            f"https://youtube.com/watch?v={video.youtube_id}")
+
+upload = {
+    "video_id": video.id,
+    "platform": "twitter",
+    "publication_date": datetime.date.now(),
+}
+
+db.merge(upload, db.tables["Upload"])

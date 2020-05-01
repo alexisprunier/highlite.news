@@ -48,4 +48,3 @@ if __name__ == '__main__':
         cron.start()
 
     application.run(debug=True, threaded=True)
-
