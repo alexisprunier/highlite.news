@@ -55,7 +55,7 @@ class PageVote extends React.Component {
                                 <div className="title2">
                                     {c}
                                 </div>
-                                {this.state.articles.filter(a => a.category == c).map(a => { return (
+                                {this.state.articles.filter(a => a.category == c).sort((a, b) => a.nb_vote > b.nb_vote).map(a => { return (
                                     <Article
                                         a={a}
                                     />

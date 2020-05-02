@@ -14,6 +14,7 @@ class GetVideos(Resource):
         try:
 
             videos = self.db.get(self.db.tables["Video"], {"format": "youtube"})
+            videos = [v for v in videos if v.youtube_id is not None]
             videos = Serializer.serialize(videos, self.db.tables["Video"])
 
         except Exception as e:
