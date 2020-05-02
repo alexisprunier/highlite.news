@@ -32,7 +32,7 @@ class PageHome extends React.Component {
     }
 
     getDates() {
-        return [...new Set(this.state.videos.map(v => { return v.creation_date }))];
+        return [...new Set(this.state.videos.map(v => { return v.creation_date }))].reverse();;
     }
 
     render() {
