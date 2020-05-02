@@ -16,7 +16,7 @@ class DB(metaclass=Singleton):
     def __init__(self):
         db_uri = URL(**DB_URI)
 
-        self.engine = create_engine(db_uri, pool_recycle=100, pool_pre_ping=True)
+        self.engine = create_engine(db_uri, pool_recycle=100, pool_pre_ping=True, isolation_level="READ COMMITTED")
         session = sessionmaker()
         session.configure(bind=self.engine)
         self.session = session()

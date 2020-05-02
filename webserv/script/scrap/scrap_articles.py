@@ -11,19 +11,21 @@ import datetime
 from db.db import DB
 from io import BytesIO
 import io
+from pymysql.err import IntegrityError
 
 
 def traverse(source, category, base_url, soup, level):
 	if soup.name is not None:
 		if level >= 4:
 			urls = re.findall(r"(?:http|ftp|https):\/\/(?:[\w_-]+(?:(?:\.[\w_-]+)+))(?:[\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?", str(soup))
-			paragraphs = [p for p in re.findall(r"(?<=>)[0-9A-Za-zÀ-ÖØ-öø-ÿ ’,.;:'\n&]{40,200}(?=<)", str(soup)) if len(p.strip()) > 0]
+			paragraphs = [p for p in re.findall(r"(?<=>)[0-9A-Za-zÀ-ÖØ-öø-ÿ ’,.;:'\n&]{35,200}(?=<)", str(soup))
+							if len(p.strip()) > 0 and len([c for c in p if c.isalpha()]) > 30]
 			times = re.findall(r"(?<=>)(?:[01][0-9]|2[0-3])[:h][0-5][0-9](?=<)", str(soup))
 			image_tags = soup.findAll('img')
 			
 			urls = [u for u in urls if u[-4:] not in [".jpg", ".png", ".JPG", ".PNG"]]
 			
-			if len(image_tags) == 1 and len(paragraphs) >= 1 and len(times) <= 1:
+			if len(image_tags) == 1 and len(paragraphs) >= 1:
 				if "src" in image_tags[0]:
 					image = image_tags[0]['src']
 					
@@ -67,7 +69,7 @@ for source in sources:
 	driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
 	driver.get(source.url)
 	html = driver.page_source
-	soup = BeautifulSoup(html)
+	soup = BeautifulSoup(html, features="lxml")
 	[x.extract() for x in soup.find_all('noscript')]
 	traverse(source.publisher, category, source.url, soup, 0)
 
@@ -86,7 +88,6 @@ for i, article in enumerate(articles):
 	try:
 		with request.urlopen(article["image_url"]) as response:
 			image = response.read()
-		print("A", image)
 	except Exception as e:
 		image = None
 		print(e, "ON THIS URL :", article["image_url"])
@@ -117,4 +118,9 @@ if len(articles) > 0:
 		a = db.get(db.tables["Article"], {"title": article["title"]})
 
 		if len(a) == 0:
-			db.merge(article, db.tables["Article"])
+			try:
+				db.merge(article, db.tables["Article"])
+			except IntegrityError:
+				pass
+
+db.session.close()

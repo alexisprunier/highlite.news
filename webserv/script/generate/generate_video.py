@@ -437,3 +437,5 @@ video = db.merge({
 db.merge([
 	{"video_id": video.id, "article_id": a.id, "pos": i+1} for i, a in enumerate(articles)
 ], db.tables["VideoArticle"])
+
+db.session.close()

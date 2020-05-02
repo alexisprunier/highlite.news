@@ -41,10 +41,9 @@ def serve(path):
         return send_from_directory(os.path.join(PROJECT_PATH, "webapp", "build"), 'index.html')
 
 
+#if ENVIRONMENT == "production":
+cron = Thread(target=cron.run)
+cron.start()
+
 if __name__ == '__main__':
-
-    if ENVIRONMENT == "production":
-        cron = Thread(target=cron.run)
-        cron.start()
-
-    application.run(debug=True, threaded=True)
+    application.run(debug=True, threaded=True, use_reloader=False)

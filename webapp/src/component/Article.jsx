@@ -40,7 +40,7 @@ class Article extends React.Component {
                             </div>
                             <div className="col-lg-6 col-md-6 col-6">
                                 <div className="Article-category title4">
-                                    {this.props.a.category}
+                                    {this.props.a.source}
                                 </div>
                             </div>
                             <div className="col-lg-6 col-md-6 col-6">
