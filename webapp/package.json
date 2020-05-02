@@ -10,6 +10,7 @@
     "react": "^16.12.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.12.0",
+    "react-notifications": "^1.6.0",
     "react-scripts": "2.0.3",
     "why-did-you-update": "^0.1.1"
   },

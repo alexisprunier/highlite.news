@@ -3,6 +3,7 @@ import "./Video.css";
 import {getRequest} from "../utils/request";
 import Loading from "./Loading";
 import Article from "./Article";
+import {NotificationManager} from 'react-notifications';
 
 
 class Video extends React.Component {
@@ -25,7 +26,9 @@ class Video extends React.Component {
                     articles: data,
                 });
             }, response => {
+                NotificationManager.warning(response.statusText);
             }, error => {
+                NotificationManager.error(error.message);
             });
         }
 
@@ -81,9 +84,9 @@ class Video extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="Video-articles">
-                    {this.state.opened ?
-                        this.state.articles === null ?
+                {this.state.opened ?
+                    <div className="Video-articles">
+                        {this.state.articles === null ?
                             <div className="Video-loading-articles">
                                 <Loading/>
                             </div>
@@ -97,9 +100,9 @@ class Video extends React.Component {
                                     <Article
                                         a={a}
                                     />
-                                )})
-                    : ""}
-                </div>
+                                )})}
+                    </div>
+                : ""}
             </div>
         );
     }

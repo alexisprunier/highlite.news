@@ -3,6 +3,7 @@ import "./PageHome.css";
 import {getRequest} from "../utils/request";
 import Video from "./Video";
 import Loading from "./Loading";
+import {NotificationManager} from 'react-notifications';
 
 
 class PageHome extends React.Component {
@@ -24,7 +25,9 @@ class PageHome extends React.Component {
                 videos: data,
             });
         }, response => {
+            NotificationManager.warning(response.statusText);
         }, error => {
+            NotificationManager.error(error.message);
         });
     }
 

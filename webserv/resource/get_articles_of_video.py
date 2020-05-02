@@ -1,5 +1,4 @@
 from flask_restful import Resource
-import traceback
 from utils.serializer import Serializer
 from flask import request
 
@@ -17,10 +16,14 @@ class GetArticlesOfVideo(Resource):
             if request.args.get('video_id') is None:
                 return "", "500 'video_id' parameter is missing"
 
-            articles = self.db.get_articles_of_video(request.args.get('video_id'))
+            query = self.db.get_articles_of_video(request.args.get('video_id'))
 
-            for article in articles:
-                article.image = None
+            articles = []
+
+            for a in query:
+                self.db.session.expunge(a)
+                a.image = None
+                articles.append(a)
 
             articles = Serializer.serialize(articles, self.db.tables["Article"])
 
