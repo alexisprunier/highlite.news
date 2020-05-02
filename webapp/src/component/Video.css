@@ -9,9 +9,6 @@
 }
 
 .Video-video {
-    /*width: 100%;
-    max-height: 150px;
-    min-height: 150px;*/
 	vertical-align: middle;
 	overflow: hidden;
 	margin-left: auto;
@@ -19,12 +16,10 @@
 	text-align: center;
 }
 
-.Video-video frame {
-	position: absolute;
-    top: 0;
-    left: 0;
+.Video-video iframe {
     width: 100%;
     height: 100%;
+    min-height: 50px;
 }
 
 .Video-image-img {
