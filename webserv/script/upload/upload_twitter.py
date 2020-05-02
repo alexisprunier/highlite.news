@@ -2,6 +2,8 @@ import tweepy
 import datetime
 import sys
 from db.db import DB
+from webserv.exception.upload import UploadException
+
 
 consumer_key = "eMhpRZbngPMLg95L2JZnBIk2P"
 consumer_secret = "OrzR4HDMOzLNauCdRcT2dRCDA5eQkEDOPb7wxpoM11ZbakL513"
@@ -21,16 +23,16 @@ db = DB()
 video = db.get(db.tables["Video"], {"format": "youtube", "category": category, "creation_date": datetime.date.today()})
 video = video[0] if len(video) > 0 else None
 
-if len(video) == 0:
-    raise Exception("Video not found in DB")
+if video is None:
+    raise UploadException("Video not found in DB")
 
 if video.youtube_id is None:
-    raise Exception("Video has no youtube ID")
+    raise UploadException("Video has no youtube ID")
 
-upload = db.get(db.tables["Upload"], {"video_id": video.id})
+upload = db.get(db.tables["Upload"], {"video_id": video.id, "platform": "twitter"})
 
 if len(upload) > 0:
-    raise Exception("This video already in the upload table")
+    raise UploadException("This video already in the upload table")
 
 #############
 # POST
@@ -57,3 +59,4 @@ upload = {
 }
 
 db.merge(upload, db.tables["Upload"])
+db.session.close()

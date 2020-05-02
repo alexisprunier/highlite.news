@@ -13,6 +13,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 import google.auth.transport.requests as google_request
 import google.oauth2.credentials
+from webserv.exception.upload import UploadException
 
 
 httplib2.RETRIES = 1
@@ -116,14 +117,14 @@ if __name__ == '__main__':
     video = video[0] if len(video) > 0 else None
 
     if video is None:
-        raise Exception("Video not found in table")
+        raise UploadException("Video not found in table")
     if video.youtube_id is not None:
-        raise Exception("This video already has a Youtube ID")
+        raise UploadException("This video already has a Youtube ID")
 
     upload = db.get(db.tables["Upload"], {"video_id": video.id})
 
     if len(upload) > 0:
-        raise Exception("This video already in the upload table")
+        raise UploadException("This video already in the upload table")
 
     articles = db.get_articles_of_video(video.id)
 
@@ -168,7 +169,7 @@ if __name__ == '__main__':
             }
 
             db.merge(upload, db.tables["Upload"])
-
+            db.session.close()
         else:
             print("Error while uploading the video")
     except HttpError as e:
