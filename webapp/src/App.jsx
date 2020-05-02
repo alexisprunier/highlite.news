@@ -14,8 +14,10 @@ class App extends React.Component {
 
         this.changeMenu = this.changeMenu.bind(this);
 
+        console.log(window.location.hash)
+
         this.state = {
-            selectedMenu: "HOME"
+            selectedMenu: window.location.hash === "#vote" ? "VOTE" : "HOME"
         };
     }
 
