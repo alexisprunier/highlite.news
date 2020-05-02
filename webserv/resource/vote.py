@@ -1,7 +1,6 @@
 from flask_restful import Resource
 import traceback
 from flask import request
-import sqlalchemy
 
 
 class Vote(Resource):
@@ -26,7 +25,7 @@ class Vote(Resource):
             except Exception as e:
                 self.db.session.rollback()
                 print(e)
-                return "", "200 Already voted"
+                return "", "500 Vous ne pouvez plus voter pour cette article"
 
         except Exception as e:
             traceback.print_exc()

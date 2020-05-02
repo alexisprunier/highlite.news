@@ -8,6 +8,10 @@
     margin: 5px 0px;
 }
 
+.Article .row {
+    margin: 0px !important;
+}
+
 .Article-image {
     max-width: 40%;
     max-height: 200px;
@@ -45,7 +49,7 @@
 .Article-links {
 	text-align: right;
 	font-size: 12px;
-	margin-top: 2px;
+	margin-top: 6px;
 }
 
 .Article-center-row {
@@ -62,6 +66,11 @@
     color: #F3F279;
     cursor: pointer;
 }
+
+.Article-vote-done {
+    color: #90ff90 !important;
+}
+
 
 .Article-vote:hover {
     color: #FFCC40;

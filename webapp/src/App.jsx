@@ -3,6 +3,8 @@ import Menu from "./component/Menu";
 import PageHome from "./component/PageHome";
 import PageVote from "./component/PageVote";
 import "./App.css";
+import {NotificationContainer} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 
 class App extends React.Component {
@@ -40,6 +42,7 @@ class App extends React.Component {
                 <Menu
                     changeMenu={this.changeMenu}
                 />
+                <NotificationContainer/>
             </div>
         );
     }

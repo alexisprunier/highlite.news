@@ -4,6 +4,7 @@ from flask import Flask, send_from_directory
 from webserv.resource.get_videos import GetVideos
 from webserv.resource.get_articles import GetArticles
 from webserv.resource.get_articles_of_video import GetArticlesOfVideo
+from webserv.resource.get_votes_of_article import GetVotesOfArticle
 from webserv.resource.vote import Vote
 from utils.config import DB_URI, ENVIRONMENT, PROJECT_PATH
 from threading import Thread
@@ -29,6 +30,7 @@ db = DB()
 api.add_resource(GetVideos, '/r/get_videos', resource_class_kwargs={"db": db})
 api.add_resource(GetArticles, '/r/get_articles', resource_class_kwargs={"db": db})
 api.add_resource(GetArticlesOfVideo, '/r/get_articles_of_video', resource_class_kwargs={"db": db})
+api.add_resource(GetVotesOfArticle, '/r/get_votes_of_article', resource_class_kwargs={"db": db})
 api.add_resource(Vote, '/r/vote', resource_class_kwargs={"db": db})
 
 

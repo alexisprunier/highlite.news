@@ -71,6 +71,15 @@ class DB(metaclass=Singleton):
                 q = q.filter(getattr(table, attr) == value)
         return q.all()
 
+    def count(self, table, filters={}):
+        q = self.session.query(table)
+        for attr, value in filters.items():
+            if type(value) == list:
+                q = q.filter(getattr(table, attr).in_(value))
+            else:
+                q = q.filter(getattr(table, attr) == value)
+        return q.count()
+
     def delete(self, table, filters=None):
         if filters is None:
             # We don't take the risk to have to filter on delete, truncate() is made for that

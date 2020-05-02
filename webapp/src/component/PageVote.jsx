@@ -3,6 +3,7 @@ import "./PageVote.css";
 import {getRequest} from "../utils/request";
 import Article from "./Article";
 import Loading from "./Loading";
+import {NotificationManager} from 'react-notifications';
 
 
 class PageVote extends React.Component {
@@ -23,7 +24,9 @@ class PageVote extends React.Component {
                 articles: data,
             });
         }, response => {
+            NotificationManager.warning(response.statusText);
         }, error => {
+            NotificationManager.error(error.message);
         });
     }
 
