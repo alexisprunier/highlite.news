@@ -13,6 +13,7 @@ import subprocess
 from utils.config import PROJECT_PATH
 from db.db import DB
 import numpy as np
+from webserv.exception.already_generated import AlreadyGeneratedException
 
 
 conf = {
@@ -232,6 +233,9 @@ tmp_mp4_video_rel_path = f'{output_dir}/{tmp_mp4_video_name}'
 avi_video_abs_path = os.path.join(PROJECT_PATH, avi_video_rel_path)
 mp4_video_abs_path = os.path.join(PROJECT_PATH, mp4_video_rel_path)
 tmp_mp4_video_abs_path = os.path.join(PROJECT_PATH, tmp_mp4_video_rel_path)
+
+if os.path.exists(mp4_video_abs_path):
+	raise AlreadyGeneratedException("The video already exists")
 
 video_width = conf["format"][0]
 video_height = conf["format"][1]

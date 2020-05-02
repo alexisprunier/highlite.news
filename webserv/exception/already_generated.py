@@ -1,0 +1,3 @@
+
+class AlreadyGeneratedException(Exception):
+    pass
