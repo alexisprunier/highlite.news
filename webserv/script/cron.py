@@ -7,6 +7,7 @@ import functools
 import datetime
 import traceback
 from webserv.exception.upload import UploadException
+from webserv.exception.already_generated import AlreadyGeneratedException
 
 
 def log_manager(func):
@@ -42,9 +43,18 @@ def run():
     @log_manager
     def generate(category):
         generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
-        os.system(f"{generate_script} {category} youtube")
-        os.system(f"{generate_script} {category} instagram")
-        os.system(f"{generate_script} {category} tiktok")
+        try:
+            os.system(f"{generate_script} {category} youtube")
+        except AlreadyGeneratedException as e:
+            print(e)
+        try:
+            os.system(f"{generate_script} {category} instagram")
+        except AlreadyGeneratedException as e:
+            print(e)
+        try:
+            os.system(f"{generate_script} {category} tiktok")
+        except AlreadyGeneratedException as e:
+            print(e)
 
     @log_manager
     def upload(category):
