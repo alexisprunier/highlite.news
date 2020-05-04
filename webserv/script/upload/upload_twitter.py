@@ -45,7 +45,7 @@ api = tweepy.API(auth)
 
 api.update_status(
     status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
-           f"#Highlite #News #Actu #Today #{category.replace('-', '')}\n\n"
+           f"#Highlite #News #Actu #Today #{category.replace('-', '').replace(' ', '')}\n\n"
            f"https://youtube.com/watch?v={video.youtube_id}")
 
 #############

@@ -50,7 +50,7 @@ graph.put_object(
     parent_object="highlite.news",
     connection_name="feed",
     message=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
-            f"#Highlite #News #Actu #Today #{category.replace('-', '')}\n\n"
+            f"#Highlite #News #Actu #Today #{category.replace('-', '').replace(' ', '')}\n\n"
             f"https://youtube.com/watch?v={video.youtube_id}"
 )
 

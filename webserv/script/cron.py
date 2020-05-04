@@ -38,21 +38,21 @@ def run():
     @log_manager
     def scrap(category):
         scrap_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "scrap_articles.py")
-        os.system(f"{scrap_script} {category}")
+        os.system(f'{scrap_script} "{category}"')
 
     @log_manager
     def generate(category):
         generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
         try:
-            os.system(f"{generate_script} {category} youtube")
+            os.system(f'{generate_script} "{category}" youtube')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            os.system(f"{generate_script} {category} instagram")
+            os.system(f'{generate_script} "{category}" instagram')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            os.system(f"{generate_script} {category} tiktok")
+            os.system(f'{generate_script} "{category}" tiktok')
         except AlreadyGeneratedException as e:
             print(e)
 
@@ -62,23 +62,24 @@ def run():
         upload_twitter_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_twitter.py")
         upload_facebook_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_facebook.py")
         try:
-            os.system(f"{upload_youtube_script} {category}")
+            os.system(f'{upload_youtube_script} "{category}"')
         except UploadException as e:
             print(e)
         time.sleep(30)
         try:
-            os.system(f"{upload_twitter_script} {category}")
+            os.system(f'{upload_twitter_script} "{category}"')
         except UploadException as e:
             print(e)
         try:
-            os.system(f"{upload_facebook_script} {category}")
+            os.system(f'{upload_facebook_script} "{category}"')
         except UploadException as e:
             print(e)
 
     for p in pipelines:
         schedule.every().day.at(p.scrap_time).do(scrap, p.category)
         schedule.every().day.at(p.generation_time).do(generate, p.category)
-        schedule.every().day.at(p.publication_time).do(upload, p.category)
+        if p.publication_time is not None:
+            schedule.every().day.at(p.publication_time).do(upload, p.category)
 
     while True:
         print("check")
