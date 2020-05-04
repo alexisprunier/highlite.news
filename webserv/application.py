@@ -48,4 +48,4 @@ cron = Thread(target=cron.run)
 cron.start()
 
 if __name__ == '__main__':
-    application.run(debug=True, threaded=True, use_reloader=False)
+    application.run(debug=True, threaded=True, use_reloader=False, port=5001)

@@ -20,6 +20,8 @@ db = DB()
 # CHECK
 #############
 
+pipeline = db.get(db.tables["Pipeline"], {"category": category})[0]
+
 video = db.get(db.tables["Video"], {"format": "youtube", "category": category, "creation_date": datetime.date.today()})
 video = video[0] if len(video) > 0 else None
 
@@ -44,7 +46,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 api.update_status(
-    status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n\n"
+    status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur {pipeline.article} {category}\n\n"
            f"#Highlite #News #Actu #Today #{category.replace('-', '').replace(' ', '')}\n\n"
            f"https://youtube.com/watch?v={video.youtube_id}")
 

@@ -124,6 +124,7 @@ class DB(metaclass=Singleton):
             .outerjoin(self.tables["ArticleVote"]).group_by(self.tables["Article"]).all()
 
         rows.sort(key=lambda o: o[1], reverse=True)
+        rows = [r for r in rows if r[1] > 0]
 
         articles = []
 

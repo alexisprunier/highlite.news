@@ -12,5 +12,3 @@ DB_URI = {
     'port': os.getenv('RDS_PORT') or 3306,
     'database': 'Highlite',
 }
-
-
