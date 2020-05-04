@@ -5,7 +5,7 @@ from utils.config import PROJECT_PATH
 scrap_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "scrap_articles.py")
 
 os.system(f"{scrap_script} COVID-19")
-os.system(f"{scrap_script} FOOTBALL")
+"""os.system(f"{scrap_script} FOOTBALL")"""
 
 generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
 

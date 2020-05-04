@@ -224,7 +224,7 @@ output_dir = os.path.join(PROJECT_PATH, "output", datetime.date.today().strftime
 if not os.path.exists(output_dir):
 	os.mkdir(output_dir)
 
-avi_video_name = f'highlite_{category}_{format}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
+avi_video_name = f'highlite_{category.replace(" ", "")}_{format}_{datetime.date.today().strftime("%Y-%m-%d")}.avi'
 mp4_video_name = f"{avi_video_name.split('.')[0]}.mp4"
 tmp_mp4_video_name = f"tmp_{avi_video_name.split('.')[0]}.mp4"
 avi_video_rel_path = f'{output_dir}/{avi_video_name}'
@@ -268,7 +268,7 @@ articles = db.get_articles_of_the_day(category)
 # CREATE DEFAULT FRAME
 ####################
 
-img_background = cv2.imread(os.path.join(PROJECT_PATH, 'static', 'img', 'background', f"background_{category}.jpg"), -1)
+img_background = cv2.imread(os.path.join(PROJECT_PATH, 'static', 'img', 'background', f"background_{category.replace(' ', '')}.jpg"), -1)
 if conf["format"][0] > len(img_background[0]) or conf["format"][1] > len(img_background):
 	img_background = resize_image(img_background, 2)
 img_background = crop_image_in_center(img_background, video_width, video_height)
@@ -364,7 +364,7 @@ pos_el4 = int(video_width / 2 + 600)
 for y, _ in enumerate(range(6 * 24)):
 	txt = "Liens sur: www.highlite.news"
 	frame = overlay_text(default_frame, txt, conf["date"]["pos"], conf["date"]["size"], color_bgr_blue, pos_type="right", f=max(0, y))
-	txt = f"Nouvelle vidéo {category} tous les jours à {pipeline.publication_time[:2]}h"
+	txt = f"Nouvelle vidéo {category} tous les jours à {pipeline.publication_time[:2] if pipeline.publication_time is not None else 'XX'}h"
 	frame = overlay_text(frame, txt, conf["ad"]["pos"], conf["ad"]["size"], color_bgr_dark_yellow, pos_type="right", max_width=conf["ad"]["max_width"])
 
 	frame = overlay_image(frame, image_twitter, conf["social"]["pos1"], pos_type="middle", f=max(0, y))
@@ -396,7 +396,7 @@ video.release()
 ####################
 
 mov = movie(avi_video_abs_path)
-mus = music(os.path.join(PROJECT_PATH, f'static/sound/sound_{category}.mp3'))
+mus = music(os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3'))
 final = mov + mus
 final.save(tmp_mp4_video_abs_path)
 
