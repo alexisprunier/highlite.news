@@ -35,8 +35,7 @@ VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 category = sys.argv[1]
 today = datetime.date.today().strftime('%Y-%m-%d')
 today_fr = datetime.date.today().strftime('%d-%m-%Y')
-article_path = os.path.join(PROJECT_PATH, "data", today, f"articles_{category}_filtered.json")
-youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, f"youtube_video_id_{category}.txt")
+youtube_video_id_path = os.path.join(PROJECT_PATH, "data", today, f"youtube_video_id_{category.replace(' ', '')}.txt")
 
 
 
@@ -133,7 +132,7 @@ if __name__ == '__main__':
         articles_body += "Article " + str(i+1) + ": " + (str(a.url) if a.url is not None else "Oops, nous avons perdu le lien") + "\n"
 
     args = {
-        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_{category}_youtube_{today}.mp4"),
+        "file": os.path.join(PROJECT_PATH, "output", today, f"highlite_{category.replace(' ', '')}_youtube_{today}.mp4"),
         "title": f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}",
         "description":
             f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur le {category}\n"

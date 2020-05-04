@@ -431,7 +431,7 @@ os.remove(tmp_mp4_video_abs_path)
 ####################
 
 video = db.merge({
-	"title": f"Highlite du {today} sur le {category}",
+	"title": f"Highlite du {today} sur {pipeline.article} {category}",
 	"file_name": mp4_video_abs_path,
 	"format": format,
 	"category": category,
