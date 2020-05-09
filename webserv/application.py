@@ -2,9 +2,11 @@ from flask_restful import Api
 from flask_cors import CORS
 from flask import Flask, send_from_directory
 from webserv.resource.get_videos import GetVideos
+from webserv.resource.get_videos_of_the_day import GetVideosOfTheDay
 from webserv.resource.get_articles import GetArticles
 from webserv.resource.get_articles_of_video import GetArticlesOfVideo
 from webserv.resource.get_votes_of_article import GetVotesOfArticle
+from webserv.resource.download_video import DownloadVideo
 from webserv.resource.vote import Vote
 from utils.config import DB_URI, ENVIRONMENT, PROJECT_PATH
 from threading import Thread
@@ -28,10 +30,12 @@ db = DB()
 # Routes
 
 api.add_resource(GetVideos, '/r/get_videos', resource_class_kwargs={"db": db})
+api.add_resource(GetVideosOfTheDay, '/r/get_videos_of_the_day', resource_class_kwargs={"db": db})
 api.add_resource(GetArticles, '/r/get_articles', resource_class_kwargs={"db": db})
 api.add_resource(GetArticlesOfVideo, '/r/get_articles_of_video', resource_class_kwargs={"db": db})
 api.add_resource(GetVotesOfArticle, '/r/get_votes_of_article', resource_class_kwargs={"db": db})
 api.add_resource(Vote, '/r/vote', resource_class_kwargs={"db": db})
+api.add_resource(DownloadVideo, '/r/download_video')
 
 
 @application.route('/', defaults={'path': ''})

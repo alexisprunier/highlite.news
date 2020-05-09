@@ -90,11 +90,11 @@ html, body {
 
 a {
     font-family: 'Bungee';
-    color: #F3F279;
+    color: #F3F279 !important;
 }
 
 a:hover {
-    color: #FFCC40;
+    color: #FFCC40 !important;
 }
 
 @font-face {
@@ -116,4 +116,43 @@ a:hover {
 
 .notification-warning {
     background-color: #FFCC40 !important;
+}
+
+
+.SocialNetwork {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    margin: 0px auto;
+}
+
+.SocialNetwork div {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.SocialNetwork div div.SocialNetworkLogo {
+
+}
+
+.SocialNetwork div div.SocialNetworkCenter {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: right;
+}
+
+.fb-like {
+    margin-top: 14px;
+    margin-bottom: 6px !important;
+}
+
+.twitter-follow-button {
+    margin-top: 12px !important;
+}
+
+#___ytsubscribe_0 {
+    margin-top: 10px !important;
 }
