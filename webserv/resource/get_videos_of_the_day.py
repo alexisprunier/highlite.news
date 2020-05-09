@@ -4,7 +4,7 @@ from utils.serializer import Serializer
 import datetime
 
 
-class GetVideos(Resource):
+class GetVideosOfTheDay(Resource):
 
     db = None
 
@@ -15,10 +15,8 @@ class GetVideos(Resource):
         try:
 
             today = datetime.date.today()
-            week_ago = today - datetime.timedelta(days=7)
 
-            videos = self.db.get(self.db.tables["Video"], {"format": "youtube"})
-            videos = [v for v in videos if v.youtube_id is not None and v.creation_date > week_ago]
+            videos = self.db.get(self.db.tables["Video"], {"creation_date": today})
             videos = Serializer.serialize(videos, self.db.tables["Video"])
 
         except Exception as e:

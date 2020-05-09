@@ -128,7 +128,7 @@
     background: -webkit-radial-gradient(transparent 35%, #FFCC40 35%);
     background: -moz-radial-gradient(transparent 35%, #FFCC40 35%);
     background: radial-gradient(transparent 35%, #FFCC40 35%);
-    color: #fff;
+    color: #fff !important;
     text-align: center;
     text-decoration: none;
     font-size: 1.2em;

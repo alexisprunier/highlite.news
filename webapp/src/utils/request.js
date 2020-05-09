@@ -29,7 +29,7 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
     })
 }
 
-export async function getBlobRequest(url, token, callback, catchBadResponse, catchError) {
+export async function getBlobRequest(url, callback, catchBadResponse, catchError) {
     fetch(getApiURL() + url, {
         method: "GET",
         headers: new Headers({
