@@ -45,9 +45,11 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
+additional_ht = " ".join(["#"+h for h in pipeline.hashtag.split(",")]) if pipeline.hashtag is not None else ""
+
 api.update_status(
     status=f"Hɪɢʜʟɪᴛᴇ™ du {today_fr} sur {pipeline.article} {category}\n\n"
-           f"#Highlite #News #Actu #Today #{category.replace('-', '').replace(' ', '')}\n\n"
+           f"#Highlite #News #Actu #Today #{category.replace('-', '').replace(' ', '')} {additional_ht}\n\n"
            f"https://youtube.com/watch?v={video.youtube_id}")
 
 #############
