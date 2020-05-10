@@ -1,0 +1,24 @@
+
+#PageAdmin {
+	position: relative;
+    width:100%;
+    max-width: 800px;
+    margin: auto;
+    margin: 0px auto;
+    min-height: 100%;
+}
+
+.PageAdmin-loading-box {
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 100px);
+	text-align: center;
+	vertical-align: middle;
+}
+
+.PageAdmin-no-video {
+	position: absolute;
+	top: 40%;
+	text-align: center;
+	width: 100%;
+}
