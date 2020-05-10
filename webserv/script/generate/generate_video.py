@@ -264,6 +264,9 @@ if pipeline is None:
 	raise Exception("Pipeline not found for this category")
 articles = db.get_articles_of_the_day(category)
 
+if len(articles) < 3:
+	raise Exception("Not enough article")
+
 ####################
 # CREATE DEFAULT FRAME
 ####################
