@@ -5,3 +5,7 @@ output/*
 webapp/node_modules/*
 webapp/package-lock.json
 venv/*
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
