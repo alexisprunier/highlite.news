@@ -52,4 +52,4 @@ cron = Thread(target=cron.run)
 cron.start()
 
 if __name__ == '__main__':
-    application.run(debug=True, threaded=True, use_reloader=False, port=5002)
+    application.run(debug=True, threaded=True, use_reloader=False, port=None if ENVIRONMENT == "production" else 5002)
