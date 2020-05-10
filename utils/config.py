@@ -10,5 +10,5 @@ DB_URI = {
     'password': os.getenv('RDS_PASSWORD') or 'root',
     'host': os.getenv('RDS_HOSTNAME') or 'localhost',
     'port': os.getenv('RDS_PORT') or 3306,
-    'database': 'Highlite',
+    'database': 'highlite',
 }
