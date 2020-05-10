@@ -1,3 +1,5 @@
+awscli==1.16.125
+awsebcli==3.14.13
 opencv-python==4.2.0.32
 Pillow==7.0.0
 beautifulsoup4==4.8.2
