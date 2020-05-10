@@ -12,6 +12,7 @@ from db.db import DB
 from io import BytesIO
 import io
 from pymysql.err import IntegrityError
+from utils.config import ENVIRONMENT
 
 
 def traverse(source, category, base_url, soup, level):
@@ -54,7 +55,7 @@ def traverse(source, category, base_url, soup, level):
 				traverse(source, category, base_url, child, level + 1)
 
 
-# Controle the arguments
+# Control the arguments
 
 db = DB()
 articles = []
@@ -62,11 +63,13 @@ category = sys.argv[1]
 pipeline = db.get(db.tables["Pipeline"], {"category": category})[0]
 sources = db.get(db.tables["Source"], {"category": category})
 filters = None if pipeline.filter is None else pipeline.filter.split(",")
+chromedriver_path = r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe" \
+	if ENVIRONMENT == "dev" else "/highlite/chromedriver"
 
 # Get the articles
 
 for source in sources:
-	driver = webdriver.Chrome(executable_path=r"C:\Users\pruni\Desktop\Highlite.news\bin\chromedriver.exe")
+	driver = webdriver.Chrome(executable_path=chromedriver_path)
 	driver.get(source.url)
 	html = driver.page_source
 	soup = BeautifulSoup(html, features="lxml")
