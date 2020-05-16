@@ -8,6 +8,10 @@ import datetime
 import traceback
 from webserv.exception.upload import UploadException
 from webserv.exception.already_generated import AlreadyGeneratedException
+from webserv.script.upload.upload_twitter import UploadTwitter
+from webserv.script.upload.upload_youtube import UploadYoutube
+from webserv.script.generate.generate_video import GenerateVideo
+from webserv.script.scrap.scrap_articles import ScrapArticles
 
 
 def log_manager(func):
@@ -34,46 +38,39 @@ def run():
     db = DB()
     pipelines = db.get(db.tables["Pipeline"])
     db.session.close()
-    pre_command = "sudo python3 " if ENVIRONMENT != "dev" else ""
 
     @log_manager
     def scrap(category):
-        scrap_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "scrap_articles.py")
-        os.system(f'{pre_command}{scrap_script} "{category}"')
+        try:
+            ScrapArticles.run(category)
+        except AlreadyGeneratedException as e:
+            print(e)
+
 
     @log_manager
     def generate(category):
-        generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
         try:
-            os.system(f'{pre_command}{generate_script} "{category}" youtube')
+            GenerateVideo.run(category, 'youtube')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            os.system(f'{pre_command}{generate_script} "{category}" instagram')
+            GenerateVideo.run(category, 'instagram')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            os.system(f'{pre_command}{generate_script} "{category}" tiktok')
+            GenerateVideo.run(category, 'tiktok')
         except AlreadyGeneratedException as e:
             print(e)
 
     @log_manager
     def upload(category):
-        upload_youtube_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_youtube.py")
-        upload_twitter_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_twitter.py")
-        upload_facebook_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_facebook.py")
-
         try:
-            os.system(f'{pre_command}{upload_youtube_script} "{category}"')
+            UploadYoutube.run(category)
         except UploadException as e:
             print(e)
         time.sleep(30)
         try:
-            os.system(f'{pre_command}{upload_twitter_script} "{category}"')
-        except UploadException as e:
-            print(e)
-        try:
-            os.system(f'{pre_command}{upload_facebook_script} "{category}"')
+            UploadTwitter.run(category)
         except UploadException as e:
             print(e)
 
