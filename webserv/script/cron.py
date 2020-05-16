@@ -1,5 +1,3 @@
-import os
-from utils.config import PROJECT_PATH, ENVIRONMENT
 import schedule
 import time
 from db.db import DB
@@ -26,7 +24,7 @@ def log_manager(func):
                 "date": datetime.datetime.now(),
                 "trace": traceback.format_exc()
             }
-            self.db.merge(log, self.db.tables["Log"])
+            #self.db.merge(log, self.db.tables["Log"])
         finally:
             pass
 
@@ -45,7 +43,6 @@ def run():
             ScrapArticles.run(category)
         except AlreadyGeneratedException as e:
             print(e)
-
 
     @log_manager
     def generate(category):
