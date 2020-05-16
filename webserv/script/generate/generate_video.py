@@ -8,7 +8,6 @@ from utils.read_image import read_webp
 import copy
 from PIL import Image, ImageFont, ImageDraw
 import math
-import sys
 import subprocess
 from utils.config import PROJECT_PATH
 from db.db import DB
