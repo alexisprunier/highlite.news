@@ -39,21 +39,21 @@ def run():
     @log_manager
     def scrap(category):
         scrap_script = os.path.join(PROJECT_PATH, "webserv", "script", "scrap", "scrap_articles.py")
-        os.system(f'{scrap_script} "{category}"')
+        os.system(f'{pre_command}{scrap_script} "{category}"')
 
     @log_manager
     def generate(category):
         generate_script = os.path.join(PROJECT_PATH, "webserv", "script", "generate", "generate_video.py")
         try:
-            os.system(f'{generate_script} "{category}" youtube')
+            os.system(f'{pre_command}{generate_script} "{category}" youtube')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            os.system(f'{generate_script} "{category}" instagram')
+            os.system(f'{pre_command}{generate_script} "{category}" instagram')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            os.system(f'{generate_script} "{category}" tiktok')
+            os.system(f'{pre_command}{generate_script} "{category}" tiktok')
         except AlreadyGeneratedException as e:
             print(e)
 
