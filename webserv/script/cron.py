@@ -34,7 +34,7 @@ def run():
     db = DB()
     pipelines = db.get(db.tables["Pipeline"])
     db.session.close()
-    pre_command = "sudo " if ENVIRONMENT != "dev" else ""
+    pre_command = "sudo python3 " if ENVIRONMENT != "dev" else ""
 
     @log_manager
     def scrap(category):
