@@ -1,5 +1,5 @@
 import os
-from utils.config import PROJECT_PATH
+from utils.config import PROJECT_PATH, ENVIRONMENT
 import schedule
 import time
 from db.db import DB
@@ -34,6 +34,7 @@ def run():
     db = DB()
     pipelines = db.get(db.tables["Pipeline"])
     db.session.close()
+    pre_command = "sudo " if ENVIRONMENT != "dev" else ""
 
     @log_manager
     def scrap(category):
@@ -61,17 +62,18 @@ def run():
         upload_youtube_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_youtube.py")
         upload_twitter_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_twitter.py")
         upload_facebook_script = os.path.join(PROJECT_PATH, "webserv", "script", "upload", "upload_facebook.py")
+
         try:
-            os.system(f'{upload_youtube_script} "{category}"')
+            os.system(f'{pre_command}{upload_youtube_script} "{category}"')
         except UploadException as e:
             print(e)
         time.sleep(30)
         try:
-            os.system(f'{upload_twitter_script} "{category}"')
+            os.system(f'{pre_command}{upload_twitter_script} "{category}"')
         except UploadException as e:
             print(e)
         try:
-            os.system(f'{upload_facebook_script} "{category}"')
+            os.system(f'{pre_command}{upload_facebook_script} "{category}"')
         except UploadException as e:
             print(e)
 
