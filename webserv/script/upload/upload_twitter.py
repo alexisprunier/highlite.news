@@ -7,7 +7,7 @@ from webserv.exception.upload import UploadException
 class UploadTwitter:
 
     @staticmethod
-    def run(category):
+    def run(db, category):
 
         consumer_key = "eMhpRZbngPMLg95L2JZnBIk2P"
         consumer_secret = "OrzR4HDMOzLNauCdRcT2dRCDA5eQkEDOPb7wxpoM11ZbakL513"
@@ -16,8 +16,6 @@ class UploadTwitter:
 
         today = datetime.date.today().strftime('%Y-%m-%d')
         today_fr = datetime.date.today().strftime('%d-%m-%Y')
-
-        db = DB()
 
         #############
         # CHECK

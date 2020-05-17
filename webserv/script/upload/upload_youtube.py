@@ -18,7 +18,7 @@ from webserv.exception.upload import UploadException
 class UploadYoutube:
 
     @staticmethod
-    def run(category):
+    def run(db, category):
 
         httplib2.RETRIES = 1
         MAX_RETRIES = 10
@@ -107,9 +107,6 @@ class UploadYoutube:
                     sleep_seconds = random.random() * max_sleep
                     print('Sleeping %f seconds and then retrying...' % sleep_seconds)
                     time.sleep(sleep_seconds)
-
-
-        db = DB()
 
         video = db.get(db.tables["Video"], {"format": "youtube", "category": category, "creation_date": datetime.date.today()})
         video = video[0] if len(video) > 0 else None

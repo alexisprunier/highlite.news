@@ -18,7 +18,7 @@ from webserv.exception.already_generated import AlreadyGeneratedException
 class GenerateVideo:
 
 	@staticmethod
-	def run(category, format):
+	def run(db, category, format):
 
 		conf = {
 			"youtube": {
@@ -220,6 +220,19 @@ class GenerateVideo:
 		# INIT
 		####################
 
+		# Get the articles
+
+		pipeline = db.get(db.tables["Pipeline"], {"category": category})
+		pipeline = pipeline[0] if len(pipeline) > 0 else None
+		if pipeline is None:
+			raise Exception("Pipeline not found for this category")
+		articles = db.get_articles_of_the_day(category)
+
+		if len(articles) < 3:
+			raise Exception("Not enough article")
+
+		# init paths
+
 		output_dir = os.path.join(PROJECT_PATH, "output", datetime.date.today().strftime('%Y-%m-%d'))
 
 		if not os.path.exists(output_dir):
@@ -255,18 +268,6 @@ class GenerateVideo:
 		color_bgr_dark_blue = (255, 196, 55)
 
 		today = datetime.date.today().strftime("%d-%m-%Y")
-
-		# Get the articles
-
-		db = DB()
-		pipeline = db.get(db.tables["Pipeline"], {"category": category})
-		pipeline = pipeline[0] if len(pipeline) > 0 else None
-		if pipeline is None:
-			raise Exception("Pipeline not found for this category")
-		articles = db.get_articles_of_the_day(category)
-
-		if len(articles) < 3:
-			raise Exception("Not enough article")
 
 		####################
 		# CREATE DEFAULT FRAME
