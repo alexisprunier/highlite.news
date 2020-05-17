@@ -17,7 +17,7 @@ from utils.config import ENVIRONMENT
 class ScrapArticles:
 
 	@staticmethod
-	def run(category):
+	def run(db, category):
 
 		def traverse(source, category, base_url, soup, level):
 			if soup.name is not None:
@@ -61,7 +61,6 @@ class ScrapArticles:
 
 		# Control the arguments
 
-		db = DB()
 		articles = []
 		pipeline = db.get(db.tables["Pipeline"], {"category": category})[0]
 		sources = db.get(db.tables["Source"], {"category": category})

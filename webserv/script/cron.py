@@ -19,12 +19,13 @@ def log_manager(func):
         try:
             return func(self)
         except Exception as error:
-            log = {
-                "status": "ERROR",
-                "date": datetime.datetime.now(),
-                "trace": traceback.format_exc()
-            }
-            #self.db.merge(log, self.db.tables["Log"])
+            print(traceback.format_exc())
+            # log = {
+            #     "status": "ERROR",
+            #     "date": datetime.datetime.now(),
+            #     "trace": traceback.format_exc()
+            # }
+            # self.db.merge(log, self.db.tables["Log"])
         finally:
             pass
 
@@ -38,36 +39,36 @@ def run():
     db.session.close()
 
     @log_manager
-    def scrap(category):
+    def scrap(db, category):
         try:
-            ScrapArticles.run(category)
+            ScrapArticles.run(db, category)
         except AlreadyGeneratedException as e:
             print(e)
 
     @log_manager
-    def generate(category):
+    def generate(db, category):
         try:
-            GenerateVideo.run(category, 'youtube')
+            GenerateVideo.run(db, category, 'youtube')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            GenerateVideo.run(category, 'instagram')
+            GenerateVideo.run(db, category, 'instagram')
         except AlreadyGeneratedException as e:
             print(e)
         try:
-            GenerateVideo.run(category, 'tiktok')
+            GenerateVideo.run(db, category, 'tiktok')
         except AlreadyGeneratedException as e:
             print(e)
 
     @log_manager
-    def upload(category):
+    def upload(db, category):
         try:
-            UploadYoutube.run(category)
+            UploadYoutube.run(db, category)
         except UploadException as e:
             print(e)
         time.sleep(30)
         try:
-            UploadTwitter.run(category)
+            UploadTwitter.run(db, category)
         except UploadException as e:
             print(e)
 
