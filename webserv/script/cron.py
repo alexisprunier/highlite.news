@@ -15,17 +15,10 @@ from webserv.script.scrap.scrap_articles import ScrapArticles
 def log_manager(func):
     @functools.wraps(func)
     def wrapper(*args):
-        self = args[0]
         try:
-            return func(self)
+            return func(args)
         except Exception as error:
             print(traceback.format_exc())
-            # log = {
-            #     "status": "ERROR",
-            #     "date": datetime.datetime.now(),
-            #     "trace": traceback.format_exc()
-            # }
-            # self.db.merge(log, self.db.tables["Log"])
         finally:
             pass
 
