@@ -16,7 +16,7 @@ def log_manager(func):
     @functools.wraps(func)
     def wrapper(*args):
         try:
-            return func(args)
+            return func(*args)
         except Exception as error:
             print(traceback.format_exc())
         finally:
@@ -25,53 +25,55 @@ def log_manager(func):
     return wrapper
 
 
-def run():
+class Cron:
 
-    db = DB()
-    pipelines = db.get(db.tables["Pipeline"])
-    db.session.close()
+    def run(self):
 
-    @log_manager
-    def scrap(db, category):
-        try:
-            ScrapArticles.run(db, category)
-        except AlreadyGeneratedException as e:
-            print(e)
+        db = DB()
+        pipelines = db.get(db.tables["Pipeline"])
+        db.session.close()
 
-    @log_manager
-    def generate(db, category):
-        try:
-            GenerateVideo.run(db, category, 'youtube')
-        except AlreadyGeneratedException as e:
-            print(e)
-        try:
-            GenerateVideo.run(db, category, 'instagram')
-        except AlreadyGeneratedException as e:
-            print(e)
-        try:
-            GenerateVideo.run(db, category, 'tiktok')
-        except AlreadyGeneratedException as e:
-            print(e)
+        @log_manager
+        def scrap(db, category):
+            try:
+                ScrapArticles.run(db, category)
+            except AlreadyGeneratedException as e:
+                print(e)
 
-    @log_manager
-    def upload(db, category):
-        try:
-            UploadYoutube.run(db, category)
-        except UploadException as e:
-            print(e)
-        time.sleep(30)
-        try:
-            UploadTwitter.run(db, category)
-        except UploadException as e:
-            print(e)
+        @log_manager
+        def generate(db, category):
+            try:
+                GenerateVideo.run(db, category, 'youtube')
+            except AlreadyGeneratedException as e:
+                print(e)
+            try:
+                GenerateVideo.run(db, category, 'instagram')
+            except AlreadyGeneratedException as e:
+                print(e)
+            try:
+                GenerateVideo.run(db, category, 'tiktok')
+            except AlreadyGeneratedException as e:
+                print(e)
 
-    for p in pipelines:
-        schedule.every().day.at(p.scrap_time).do(scrap, p.category)
-        schedule.every().day.at(p.generation_time).do(generate, p.category)
-        if p.publication_time is not None:
-            schedule.every().day.at(p.publication_time).do(upload, p.category)
+        @log_manager
+        def upload(db, category):
+            try:
+                UploadYoutube.run(db, category)
+            except UploadException as e:
+                print(e)
+            time.sleep(30)
+            try:
+                UploadTwitter.run(db, category)
+            except UploadException as e:
+                print(e)
 
-    while True:
-        print("check")
-        schedule.run_pending()
-        time.sleep(60)
+        for p in pipelines:
+            schedule.every().day.at(p.scrap_time).do(scrap, db, p.category)
+            schedule.every().day.at(p.generation_time).do(generate, db, p.category)
+            if p.publication_time is not None:
+                schedule.every().day.at(p.publication_time).do(upload, db, p.category)
+
+        while True:
+            print("check")
+            schedule.run_pending()
+            time.sleep(60)
