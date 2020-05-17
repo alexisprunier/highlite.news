@@ -12,7 +12,7 @@ from utils.config import DB_URI, ENVIRONMENT, PROJECT_PATH
 from threading import Thread
 from db.db import DB
 from sqlalchemy.engine.url import URL
-from webserv.script import cron
+from webserv.script.cron import Cron
 import os
 
 
@@ -47,6 +47,7 @@ def serve(path):
         return send_from_directory(os.path.join(PROJECT_PATH, "webapp", "build"), 'index.html')
 
 
+cron = Cron()
 cron = Thread(target=cron.run)
 cron.start()
 
