@@ -2,7 +2,6 @@ import schedule
 import time
 from db.db import DB
 import functools
-import datetime
 import traceback
 from webserv.exception.upload import UploadException
 from webserv.exception.already_generated import AlreadyGeneratedException

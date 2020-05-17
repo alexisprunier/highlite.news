@@ -7,11 +7,11 @@ from PIL import Image
 import random
 import imghdr
 import datetime
-from db.db import DB
 from io import BytesIO
 import io
 from pymysql.err import IntegrityError
 from utils.config import ENVIRONMENT
+from selenium.webdriver.chrome.options import Options
 
 
 class ScrapArticles:
@@ -70,13 +70,19 @@ class ScrapArticles:
 
 		# Get the articles
 
+		chrome_options = Options()
+		chrome_options.add_argument("--headless")
+		chrome_options.add_argument("--disable-extensions")
+		chrome_options.add_argument("--disable-gpu")
+
 		for source in sources:
-			driver = webdriver.Chrome(executable_path=chromedriver_path)
+			driver = webdriver.Chrome(executable_path=chromedriver_path, options=chrome_options)
 			driver.get(source.url)
 			html = driver.page_source
 			soup = BeautifulSoup(html, features="lxml")
 			[x.extract() for x in soup.find_all('noscript')]
 			traverse(source.publisher, category, source.url, soup, 0)
+			driver.quit()
 
 		# Filter the articles
 
