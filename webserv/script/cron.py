@@ -21,7 +21,7 @@ def log_manager(func):
         except Exception as error:
             log = {
                 "status": "ERROR",
-                "date": datetime.datetime.now(),
+                "datetime": datetime.datetime.now(),
                 "trace": traceback.format_exc()
             }
             db.merge(log, db.tables["Log"])
