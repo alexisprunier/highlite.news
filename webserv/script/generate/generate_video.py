@@ -233,6 +233,11 @@ class GenerateVideo:
 
 		# init paths
 
+		output_dir = os.path.join(PROJECT_PATH, "output")
+
+		if not os.path.exists(output_dir):
+			os.mkdir(output_dir)
+
 		output_dir = os.path.join(PROJECT_PATH, "output", datetime.date.today().strftime('%Y-%m-%d'))
 
 		if not os.path.exists(output_dir):

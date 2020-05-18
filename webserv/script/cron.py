@@ -9,15 +9,22 @@ from webserv.script.upload.upload_twitter import UploadTwitter
 from webserv.script.upload.upload_youtube import UploadYoutube
 from webserv.script.generate.generate_video import GenerateVideo
 from webserv.script.scrap.scrap_articles import ScrapArticles
+import datetime
 
 
 def log_manager(func):
     @functools.wraps(func)
     def wrapper(*args):
+        db = args[0]
         try:
             return func(*args)
         except Exception as error:
-            print(traceback.format_exc())
+            log = {
+                "status": "ERROR",
+                "date": datetime.datetime.now(),
+                "trace": traceback.format_exc()
+            }
+            db.merge(log, db.tables["Log"])
         finally:
             pass
 
