@@ -19,7 +19,7 @@ schedule==0.6.0
 SQLAlchemy==1.2.1
 tweepy==3.8.0
 instapy_cli==0.0.12
-mhmovie==2.3
+mhmovie==2.8
 moviepy==0.2.3.2
 pymysql==0.9.3
 facebook-sdk==3.1.0
