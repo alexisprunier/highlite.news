@@ -406,6 +406,8 @@ class GenerateVideo:
 
 		mov = movie(avi_video_abs_path)
 		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
+		print(music_path)
+		print(music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path)
 		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
 		mus = music(music_path)
 		final = mov + mus
