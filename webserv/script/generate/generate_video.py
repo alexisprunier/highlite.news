@@ -404,12 +404,19 @@ class GenerateVideo:
 		# ADD MUSIC
 		####################
 
-		mov = movie(avi_video_abs_path)
-		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
-		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
-
 		class Empty(object):
 			pass
+
+		mov = Empty()
+		mov.__class__ = movie
+		mov.fp = avi_video_abs_path
+		mov.folder = os.path.dirname(avi_video_abs_path)
+		mov.type = os.path.splitext(avi_video_abs_path)[1]
+		mov.music_fp = None
+		mov.del_files = []
+
+		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
+		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
 
 		mus = Empty()
 		mus.__class__ = music
