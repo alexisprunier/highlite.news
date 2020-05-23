@@ -404,10 +404,12 @@ class GenerateVideo:
 		# ADD MUSIC
 		####################
 
+		movie_path = avi_video_abs_path.replace("\\", "/") if ENVIRONMENT != "dev" else avi_video_abs_path
+
 		mov = movie.__new__(movie)
-		mov.fp = avi_video_abs_path
-		mov.folder = os.path.dirname(avi_video_abs_path)
-		mov.type = os.path.splitext(avi_video_abs_path)[1]
+		mov.fp = movie_path
+		mov.folder = os.path.dirname(movie_path)
+		mov.type = os.path.splitext(movie_path)[1]
 		mov.music_fp = None
 		mov.del_files = []
 
