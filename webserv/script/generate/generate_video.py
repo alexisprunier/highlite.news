@@ -404,11 +404,7 @@ class GenerateVideo:
 		# ADD MUSIC
 		####################
 
-		class Empty(object):
-			pass
-
-		mov = Empty()
-		mov.__class__ = movie
+		mov = movie.__new__(movie)
 		mov.fp = avi_video_abs_path
 		mov.folder = os.path.dirname(avi_video_abs_path)
 		mov.type = os.path.splitext(avi_video_abs_path)[1]
@@ -418,8 +414,7 @@ class GenerateVideo:
 		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
 		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
 
-		mus = Empty()
-		mus.__class__ = music
+		mus = music.__new__(music)
 		mus.fp = music_path
 		mus.type = os.path.splitext(music_path)[1]
 		mus.folder = os.path.dirname(music_path)
@@ -437,8 +432,10 @@ class GenerateVideo:
 		# CLEAN
 		####################
 
-		os.remove(avi_video_abs_path)
-		os.remove(tmp_mp4_video_abs_path)
+		if os.path.exists(avi_video_abs_path):
+			os.remove(avi_video_abs_path)
+		if os.path.exists(tmp_mp4_video_abs_path):
+			os.remove(tmp_mp4_video_abs_path)
 
 		####################
 		# SNAPCHAT SPLIT WITH THE TIKTOK FORMAT
