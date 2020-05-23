@@ -407,7 +407,7 @@ class GenerateVideo:
 		mov = movie(avi_video_abs_path)
 		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
 		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
-		mus = music(os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3'))
+		mus = music(music_path)
 		final = mov + mus
 		final.save(tmp_mp4_video_abs_path)
 
