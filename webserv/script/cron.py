@@ -19,6 +19,7 @@ def log_manager(func):
         try:
             return func(*args)
         except Exception as error:
+            print(error)
             log = {
                 "status": "ERROR",
                 "datetime": datetime.datetime.now(),
@@ -37,7 +38,6 @@ class Cron:
 
         db = DB()
         pipelines = db.get(db.tables["Pipeline"])
-        db.session.close()
 
         @log_manager
         def scrap(db, category):
