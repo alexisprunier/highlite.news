@@ -416,14 +416,14 @@ class GenerateVideo:
 		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
 		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
 
-		mus = music.__new__(music)
+		"""mus = music.__new__(music)
 		mus.fp = music_path
 		mus.type = os.path.splitext(music_path)[1]
 		mus.folder = os.path.dirname(music_path)
-		mus.del_files = []
+		mus.del_files = []"""
 
-		final = mov + mus
-		final.save(tmp_mp4_video_abs_path.replace("\\", "/") if ENVIRONMENT != "dev" else tmp_mp4_video_abs_path)
+		mov.music_fp = music_path
+		mov.save(tmp_mp4_video_abs_path.replace("\\", "/") if ENVIRONMENT != "dev" else tmp_mp4_video_abs_path)
 
 		if os.path.exists(mp4_video_abs_path):
 			os.remove(mp4_video_abs_path)
