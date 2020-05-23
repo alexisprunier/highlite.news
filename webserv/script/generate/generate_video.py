@@ -423,12 +423,21 @@ class GenerateVideo:
 		mus.del_files = []
 
 		final = mov + mus
-		final.save(tmp_mp4_video_abs_path)
+		final.save(tmp_mp4_video_abs_path.replace("\\", "/") if ENVIRONMENT != "dev" else tmp_mp4_video_abs_path)
 
 		if os.path.exists(mp4_video_abs_path):
 			os.remove(mp4_video_abs_path)
 
-		subprocess.call(['ffmpeg', '-i', tmp_mp4_video_abs_path, '-y', '-nostdin', '-ss', '0', '-t', str(10 + len(articles) * 5), mp4_video_abs_path])
+		subprocess.call(['ffmpeg',
+							'-i',
+							tmp_mp4_video_abs_path.replace("\\", "/") if ENVIRONMENT != "dev" else tmp_mp4_video_abs_path,
+							'-y',
+							'-nostdin',
+							'-ss',
+							'0',
+							'-t',
+							str(10 + len(articles) * 5),
+							mp4_video_abs_path.replace("\\", "/") if ENVIRONMENT != "dev" else mp4_video_abs_path])
 
 		####################
 		# CLEAN
