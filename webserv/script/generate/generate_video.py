@@ -9,8 +9,7 @@ import copy
 from PIL import Image, ImageFont, ImageDraw
 import math
 import subprocess
-from utils.config import PROJECT_PATH
-from db.db import DB
+from utils.config import PROJECT_PATH, ENVIRONMENT
 import numpy as np
 from webserv.exception.already_generated import AlreadyGeneratedException
 
@@ -406,6 +405,8 @@ class GenerateVideo:
 		####################
 
 		mov = movie(avi_video_abs_path)
+		music_path = os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3')
+		music_path = music_path.replace("\\", "/") if ENVIRONMENT != "dev" else music_path
 		mus = music(os.path.join(PROJECT_PATH, f'static/sound/sound_{category.replace(" ", "")}.mp3'))
 		final = mov + mus
 		final.save(tmp_mp4_video_abs_path)

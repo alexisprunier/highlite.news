@@ -76,8 +76,12 @@ class Cron:
                     print(e)
 
             for p in pipelines:
+                print("CAT", p.category)
+                print("scrap", p.scrap_time)
                 schedule.every().day.at(p.scrap_time).do(scrap, db, p.category)
+                print("gen", p.generation_time)
                 schedule.every().day.at(p.generation_time).do(generate, db, p.category)
+                print(p.publication_time)
                 if p.publication_time is not None:
                     schedule.every().day.at(p.publication_time).do(upload, db, p.category)
 
